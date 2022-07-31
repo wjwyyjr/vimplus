@@ -39,6 +39,8 @@ set cursorline           " 高亮显示当前行
 set whichwrap+=<,>,h,l   " 设置光标键跨行
 set ttimeoutlen=0        " 设置<ESC>键响应时间
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
+" set cursorline
+" set cursorcolumn
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码缩进和排版
@@ -70,6 +72,7 @@ set completeopt-=preview " 补全时不显示窗口，只显示补全列表
 set hlsearch            " 高亮显示搜索结果
 set incsearch           " 开启实时搜索功能
 set ignorecase          " 搜索时大小写不敏感
+set nowrapscan          " 搜索时大小写不敏感
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 缓存设置
@@ -105,7 +108,10 @@ if has("gui_running")
     set guioptions-=r           " 隐藏右侧滚动条
     set guioptions-=b           " 隐藏底部滚动条
     set showtabline=0           " 隐藏Tab栏
-    set guicursor=n-v-c:ver5    " 设置光标为竖线
+    "set guicursor=n-v-c:ver5   " 设置光标为竖线
+    set guicursor=a:block
+    " winpos 100 100              " 设置初始界面位置
+    " set lines=40 columns=120    " 设置初始界面大小
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -160,6 +166,14 @@ Plug 'Shougo/echodoc.vim'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'rhysd/clever-f.vim'
 Plug 'vim-scripts/indentpython.vim'
+Plug 'junegunn/vim-easy-align'
+
+" add wangjing
+Plug 'morhetz/gruvbox'
+Plug 'skywind3000/vim-dict'
+
+" test
+Plug 'wangjing/potion'
 
 " 加载自定义插件
 if filereadable(expand($HOME . '/.vimrc.custom.plugins'))
@@ -177,7 +191,7 @@ nnoremap <leader>vc :edit ~/.vimrc.custom.config<cr>
 nnoremap <leader>vp :edit ~/.vimrc.custom.plugins<cr>
 
 " 查看vimplus的help文件
-nnoremap <leader>h :view +let\ &l:modifiable=0 ~/.vimplus/help.md<cr>
+nnoremap <leader>h :view +let\ &l:modifiable=0 ~/.vim/help.md<cr>
 
 " 打开当前光标所在单词的vim帮助文档
 nnoremap <leader>H :execute ":help " . expand("<cword>")<cr>
@@ -208,10 +222,12 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 " 主题设置
 set background=dark
 let g:onedark_termcolors=256
-colorscheme onedark
+" colorscheme onedark
+colorscheme gruvbox
 
 " airline
-let g:airline_theme="onedark"
+" let g:airline_theme="onedark"
+let g:airline_theme="gruvbox"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
@@ -258,7 +274,8 @@ nnoremap C :ChangeText<cr>
 nnoremap <leader>r :ReplaceTo<space>
 
 " nerdtree
-nnoremap <silent> <leader>n :NERDTreeToggle<cr>
+"nnoremap <silent> <leader>n :NERDTreeToggle<cr>
+nnoremap <silent> wm :NERDTreeToggle<cr>
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
@@ -342,6 +359,7 @@ let g:echodoc_enable_at_startup = 1
 " tabular
 nnoremap <leader>l :Tab /\|<cr>
 nnoremap <leader>= :Tab /=<cr>
+nnoremap <leader>\ :Tab /\<cr>
 
 " vim-smooth-scroll
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
@@ -354,9 +372,15 @@ nnoremap <leader>g :GV<cr>
 nnoremap <leader>G :GV!<cr>
 nnoremap <leader>gg :GV?<cr>
 
+" easy-align
+xmap ga <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vipga)
+nmap ga <Plug>(EasyAlign) " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+
 " 加载自定义配置
 if filereadable(expand($HOME . '/.vimrc.custom.config'))
     source $HOME/.vimrc.custom.config
 endif
 
-
+" My Configuration
+set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ 11
+noremap <Space> *N
