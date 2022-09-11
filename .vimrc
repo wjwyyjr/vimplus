@@ -112,6 +112,8 @@ if has("gui_running")
     set guicursor=a:block
     " winpos 100 100              " 设置初始界面位置
     " set lines=40 columns=120    " 设置初始界面大小
+    " for plug
+    let g:interestingWordsGUIColors = ['#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF']
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -171,6 +173,9 @@ Plug 'junegunn/vim-easy-align'
 " add wangjing
 Plug 'morhetz/gruvbox'
 Plug 'skywind3000/vim-dict'
+Plug 'vim-syntastic/syntastic'
+Plug 'vhda/verilog_systemverilog.vim'
+Plug 'lfv89/vim-interestingwords'
 
 " test
 Plug 'wangjing/potion'
@@ -376,11 +381,25 @@ nnoremap <leader>gg :GV?<cr>
 xmap ga <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vipga)
 nmap ga <Plug>(EasyAlign) " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" let g:syntastic_<filetype>_checkers = ['<checker-name>']
+
+nnoremap sck :SyntasticCheck<cr>
+
+
 " 加载自定义配置
 if filereadable(expand($HOME . '/.vimrc.custom.config'))
     source $HOME/.vimrc.custom.config
 endif
 
 " My Configuration
-set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ 11
+set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ 10
 noremap <Space> *N
