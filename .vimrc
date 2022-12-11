@@ -176,6 +176,9 @@ Plug 'skywind3000/vim-dict'
 Plug 'vim-syntastic/syntastic'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'lfv89/vim-interestingwords'
+" rainbow confilct with auto-pairs, maybe resolve later
+" Plug 'frazrepo/vim-rainbow'
+Plug 'jlanzarotta/bufexplorer'
 
 " test
 Plug 'wangjing/potion'
@@ -373,8 +376,8 @@ noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " gv
-nnoremap <leader>g :GV<cr>
-nnoremap <leader>G :GV!<cr>
+nnoremap <leader>g  :GV<cr>
+nnoremap <leader>G  :GV!<cr>
 nnoremap <leader>gg :GV?<cr>
 
 " easy-align
@@ -392,8 +395,15 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_<filetype>_checkers = ['<checker-name>']
 
-nnoremap sck :SyntasticCheck<cr>
+nnoremap sck      :SyntasticCheck<cr>
 
+" bufexplorer
+nnoremap <silent> <F8> :ToggleBufExplorer<CR>
+
+nnoremap ww       :set wrap!<cr>
+noremap  <space>  *N
+
+let g:rainbow_active = 1
 
 " 加载自定义配置
 if filereadable(expand($HOME . '/.vimrc.custom.config'))
@@ -402,4 +412,3 @@ endif
 
 " My Configuration
 set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ 10
-noremap <Space> *N
