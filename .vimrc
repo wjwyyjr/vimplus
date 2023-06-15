@@ -138,6 +138,7 @@ Plug 'chxuan/prepare-code'
 Plug 'chxuan/vim-buffer'
 Plug 'chxuan/vimplus-startify'
 Plug 'preservim/tagbar'
+Plug 'ervandew/supertab' " add for ultisnipet
 Plug 'Valloric/YouCompleteMe'
 Plug 'Yggdroot/LeaderF'
 Plug 'mileszs/ack.vim'
@@ -179,9 +180,12 @@ Plug 'lfv89/vim-interestingwords'
 " rainbow confilct with auto-pairs, maybe resolve later
 " Plug 'frazrepo/vim-rainbow'
 Plug 'jlanzarotta/bufexplorer'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " test
-Plug 'wangjing/potion'
+Plug '~/.vim/plugged/potion'
 
 " 加载自定义插件
 if filereadable(expand($HOME . '/.vimrc.custom.plugins'))
@@ -199,7 +203,7 @@ nnoremap <leader>vc :edit ~/.vimrc.custom.config<cr>
 nnoremap <leader>vp :edit ~/.vimrc.custom.plugins<cr>
 
 " 查看vimplus的help文件
-nnoremap <leader>h :view +let\ &l:modifiable=0 ~/.vim/help.md<cr>
+nnoremap <leader>h :view +let\ &l:modifiable=0 ~/vimplus/help.md<cr>
 
 " 打开当前光标所在单词的vim帮助文档
 nnoremap <leader>H :execute ":help " . expand("<cword>")<cr>
@@ -368,6 +372,7 @@ let g:echodoc_enable_at_startup = 1
 nnoremap <leader>l :Tab /\|<cr>
 nnoremap <leader>= :Tab /=<cr>
 nnoremap <leader>\ :Tab /\<cr>
+" add :Tab ver for verilog
 
 " vim-smooth-scroll
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
@@ -385,7 +390,7 @@ xmap ga <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vip
 nmap ga <Plug>(EasyAlign) " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 
 " syntastic
-set statusline+=%#warningmsg#
+set statusline+=%#warningmsg#ervandew/supertab
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
@@ -400,8 +405,26 @@ nnoremap sck      :SyntasticCheck<cr>
 " bufexplorer
 nnoremap <silent> <F8> :ToggleBufExplorer<CR>
 
+" asyncrun
+nnoremap sh :AsyncRun -mode=term -pos=gnome 
+
+" ultisnipet
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+" let g:UltiSnipsJumpForwardTrigger = "<tab>"
+" let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
 nnoremap ww       :set wrap!<cr>
 noremap  <space>  *N
+
+" filelist
+au BufNewFile,BufRead *.f set ft=filelist
 
 let g:rainbow_active = 1
 
@@ -412,3 +435,4 @@ endif
 
 " My Configuration
 set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ 10
+
