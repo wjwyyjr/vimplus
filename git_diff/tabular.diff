@@ -1,0 +1,30 @@
+diff --git a/after/plugin/TabularMaps.vim b/after/plugin/TabularMaps.vim
+index ca0216c..31a032a 100644
+--- a/after/plugin/TabularMaps.vim
++++ b/after/plugin/TabularMaps.vim
+@@ -62,6 +62,25 @@ endfunction
+ 
+ AddTabularPipeline! split_declarations /,.*;/ SplitCDeclarations(a:lines)
+ 
++function! VerilogIOFormat(lines)
++    let rv = []
++    for line in a:lines
++        let split = split(line, '\s*[ ;]\s*')
++        if(len(split) == 2)
++            let tmp_sig = "|" . split[1]
++            let split[1] = tmp_sig
++        endif
++        call add(split, ";")
++        let new_line = join(split, "|")
++        let rv += [ new_line ]
++    endfor
++    return rv
++endfunction
++" AddTabularPipeline! ver /|/ VerilogIOFormat(a:lines)
++AddTabularPipeline! ver /^[^\/]\+\zs / VerilogIOFormat(a:lines) 
++            \| tabular#TabularizeStrings(a:lines, '|', 'l2') 
++            \| map(a:lines, 'substitute(v:val, "|", "", "g")')
++
+ AddTabularPattern! ternary_operator /^.\{-}\zs?\|:/l1
+ 
+ AddTabularPattern! cpp_io /<<\|>>/l1

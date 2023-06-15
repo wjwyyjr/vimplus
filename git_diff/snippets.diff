@@ -1,0 +1,18 @@
+diff --git a/snippets/verilog.snippets b/snippets/verilog.snippets
+index 16bacc2..a92b201 100644
+--- a/snippets/verilog.snippets
++++ b/snippets/verilog.snippets
+@@ -52,8 +52,12 @@ snippet casez
+ 		end
+ 	endcase
+ # Always block
++# snippet al
++# 	always @(${1:/* sensitive list */}) begin
++# 		${0}
++# 	end
+ snippet al
+-	always @(${1:/* sensitive list */}) begin
++	always @(posedge clk or negedge rst_n) begin
+ 		${0}
+ 	end
+ # Module block

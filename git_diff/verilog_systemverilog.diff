@@ -1,0 +1,1001 @@
+diff --git a/ftdetect/verilog_systemverilog.vim b/ftdetect/verilog_systemverilog.vim
+index a2e7c62..6e1e0cc 100644
+--- a/ftdetect/verilog_systemverilog.vim
++++ b/ftdetect/verilog_systemverilog.vim
+@@ -1,4 +1,5 @@
+ " Vim filetype plugin file
+ " Language:	SystemVerilog (superset extension of Verilog)
+ 
+-au! BufNewFile,BufRead *.v,*.vh,*.vp,*.sv,*.svi,*.svh,*.svp,*.sva setfiletype verilog_systemverilog
++au! BufNewFile,BufRead *.v,*.vh,*.vp setfiletype verilog
++au! BufNewFile,BufRead *.sv,*.svi,*.svh,*.svp,*.sva setfiletype systemverilog
+diff --git a/ftplugin/verilog_systemverilog.vim b/ftplugin/verilog_systemverilog.vim
+deleted file mode 100755
+index 976eddd..0000000
+--- a/ftplugin/verilog_systemverilog.vim
++++ /dev/null
+@@ -1,79 +0,0 @@
+-" Vim filetype plugin file
+-" Language:	SystemVerilog (superset extension of Verilog)
+-
+-" Only do this when not done yet for this buffer
+-if exists("b:did_ftplugin")
+-  finish
+-endif
+-
+-" Define include string
+-setlocal include=^\\s*`include
+-
+-" Set omni completion function
+-setlocal omnifunc=verilog_systemverilog#Complete
+-
+-" Store cpoptions
+-let oldcpo=&cpoptions
+-set cpo-=C
+-
+-" Undo the plugin effect
+-let b:undo_ftplugin = "setlocal fo< com< tw<"
+-    \ . "| unlet! b:browsefilter b:match_ignorecase b:match_words"
+-
+-" Set 'formatoptions' to break comment lines but not other lines,
+-" and insert the comment leader when hitting <CR> or using "o".
+-setlocal fo-=t fo+=croqlm1
+-
+-" Set 'comments' to format dashed lists in comments.
+-setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
+-
+-" Win32 and GTK can filter files in the browse dialog
+-if (has("gui_win32") || has("gui_gtk")) && !exists("b:browsefilter")
+-  let b:browsefilter = ""
+-        \ . "Verilog Family Source Files\t*.v;*.vh;*.vp;*.sv;*.svh;*.svi;*.svp\n"
+-        \ . "Verilog Source Files (*.v *.vh)\t*.v;*.vh\n"
+-        \ . "SystemVerilog Source Files (*.sv *.svh *.svi *.sva)\t*.sv;*.svh;*.svi;*.sva\n"
+-        \ . "Protected Files (*.vp *.svp)\t*.vp;*.svp\n"
+-        \ . "All Files (*.*)\t*.*\n"
+-endif
+-" Override matchit configurations
+-if exists("loaded_matchit")
+-  let b:match_ignorecase=0
+-  let b:match_words=
+-    \ '\<begin\>:\<end\>,' .
+-    \ '\<case\>\|\<casex\>\|\<casez\>:\<endcase\>,' .
+-    \ '`if\(n\)\?def\>:`elsif\>:`else\>:`endif\>,' .
+-    \ '\<module\>:\<endmodule\>,' .
+-    \ '\<if\>:\<else\>,' .
+-    \ '\<fork\>\s*;\@!$:\<join\(_any\|_none\)\?\>,' .
+-    \ '\<function\>:\<endfunction\>,' .
+-    \ '\<task\>:\<endtask\>,' .
+-    \ '\<specify\>:\<endspecify\>,' .
+-    \ '\<config\>:\<endconfig\>,' .
+-    \ '\<specify\>:\<endspecify\>,' .
+-    \ '\<generate\>:\<endgenerate\>,' .
+-    \ '\<primitive\>:\<endprimitive\>,' .
+-    \ '\<table\>:\<endtable\>,' .
+-    \ '\<class\>:\<endclass\>,' .
+-    \ '\<checker\>:\<endchecker\>,' .
+-    \ '\<interface\>:\<endinterface\>,' .
+-    \ '\<clocking\>:\<endclocking\>,' .
+-    \ '\<covergroup\>:\<endgroup\>,' .
+-    \ '\<package\>:\<endpackage\>,' .
+-    \ '\<program\>:\<endprogram\>,' .
+-    \ '\<property\>:\<endproperty\>,' .
+-    \ '\<sequence\>:\<endsequence\>'
+-endif
+-
+-" Restore cpoptions
+-let &cpoptions=oldcpo
+-unlet oldcpo
+-
+-" Raise warning if smartindent is defined
+-if &smartindent
+-    echohl WarningMsg
+-    redraw
+-    echo "Option 'smartindent' should not be used in Verilog syntax, use 'autoindent' instead."
+-endif
+-
+-" vi: set expandtab softtabstop=2 shiftwidth=2:
+diff --git a/indent/verilog_systemverilog.vim b/indent/verilog_systemverilog.vim
+deleted file mode 100644
+index 5e7e402..0000000
+--- a/indent/verilog_systemverilog.vim
++++ /dev/null
+@@ -1,471 +0,0 @@
+-" Language: Verilog/SystemVerilog HDL
+-"
+-" Credits:
+-"   Originally created by
+-"       Lewis Russell <lewis6991@gmail.com>
+-"
+-"   Inspired from script originally created by
+-"       Chih-Tsun Huang <cthuang@larc.ee.nthu.edu.tw>
+-"
+-
+-" Only load this indent file when no other was loaded.
+-if exists("b:did_indent")
+-  finish
+-endif
+-let b:did_indent = 1
+-
+-setlocal indentexpr=GetVerilogSystemVerilogIndent()
+-setlocal indentkeys=!^F,o,O,0),0},=begin,=end,=join,=endcase,=join_any,=join_none
+-setlocal indentkeys+==endmodule,=endfunction,=endtask,=endspecify
+-setlocal indentkeys+==endclass,=endpackage,=endsequence,=endclocking
+-setlocal indentkeys+==endinterface,=endgroup,=endprogram,=endproperty
+-setlocal indentkeys+==endgenerate,=endchecker,=endconfig,=endprimitive,=endtable
+-setlocal indentkeys+==`else,=`endif
+-setlocal indentkeys+=;
+-
+-let s:vlog_open_statement = '\([<>:!=?&|^%/*+]\|-[^>]\)'
+-let s:vlog_end_statement  = ')\s*;'
+-let s:vlog_comment        = '\(//.*\|/\*.*\*/\)'
+-let s:vlog_macro          = '`\k\+\((.*)\)\?\s*$'
+-let s:vlog_statement      = '.*;\s*$\|'. s:vlog_macro
+-let s:vlog_sens_list      = '\(@\s*(.*)\)'
+-let s:vlog_always         = '\<always\(_ff\|_comb\|_latch\)\?\>\s*' . s:vlog_sens_list . '\?'
+-let s:vlog_method         = '^\(\s*pure\s\+virtual\|\s*extern\)\@!.*\<\(function\|task\)\>\s\+\(\[.*\]\s*\)\?\w\+'
+-
+-let s:vlog_block_start    = '\<\(begin\|case\|^\s*fork\)\>\|{\|('
+-let s:vlog_block_end      = '\<\(end\|endcase\|join\(_all\|_none\)\?\)\>\|}\|)'
+-
+-let s:vlog_module         = '\<\(extern\s\+\)\@<!module\>'
+-let s:vlog_interface      = '\(virtual\s\+\)\@<!\<interface\>\s*\(\<class\>\)\@!\w\+.*[^,]$'
+-let s:vlog_package        = '\<package\>'
+-let s:vlog_covergroup     = '\<covergroup\>'
+-let s:vlog_program        = '\<program\>'
+-let s:vlog_generate       = '\<generate\>'
+-let s:vlog_class          = '\<\(typedef\s\+\)\@<!class\>'
+-let s:vlog_property       = g:verilog_syntax['property'][0]['match_start']
+-let s:vlog_sequence       = g:verilog_syntax['sequence'][0]['match_start']
+-let s:vlog_clocking       = g:verilog_syntax['clocking'][0]['match_start']
+-let s:vlog_preproc        = '^\s*`ifn\?def\>'
+-let s:vlog_define         = '^\s*`define\>'
+-
+-let s:vlog_case           = '\<case[zx]\?\>\s*('
+-let s:vlog_join           = '\<join\(_any\|_none\)\?\>'
+-
+-let s:vlog_block_decl     = '\(\<\(while\|if\|foreach\|for\|repeat\)\>\s*(\)\|\<\(initial\|forever\|else\|do\)\>\|' . s:vlog_always
+-
+-let s:vlog_context_end    = '\<end\(package\|function\|class\|module\|group\|generate\|program\|property\|sequence\|clocking\|interface\|task\)\>\|`endif\>'
+-
+-let s:vlog_assign         = '\([^=!]=\([^=]\|$\)\|return\||[-=]>\)'
+-let s:vlog_conditional    = '?.*:.*$'
+-
+-" Only define the function once.
+-if exists("*GetVerilogSystemVerilogIndent")
+-  finish
+-endif
+-
+-set cpo-=C
+-
+-function! GetVerilogSystemVerilogIndent()
+-
+-  let s:verilog_disable_indent = verilog_systemverilog#VariableGetValue('verilog_disable_indent_lst')
+-
+-  if verilog_systemverilog#VariableExists('verilog_indent_width')
+-    let s:offset = verilog_systemverilog#VariableGetValue('verilog_indent_width')
+-  elseif exists('?shiftwidth')
+-    let s:offset = shiftwidth()
+-  else
+-    let s:offset = &sw
+-  endif
+-
+-  " At the start of the file use zero indent.
+-  if v:lnum == 1
+-    return 0
+-  endif
+-
+-  let s:curr_line = getline(v:lnum)
+-
+-  if s:curr_line =~ '^\s*)'
+-    let l:extra_offset = 0
+-    if s:curr_line =~ '^\s*'.s:vlog_end_statement.'\s*$' &&
+-          \ index(s:verilog_disable_indent, 'eos') < 0
+-      let l:extra_offset = s:offset
+-    endif
+-    call verilog_systemverilog#Verbose("Indenting )")
+-    return indent(s:SearchForBlockStart('(', '', ')', v:lnum, 0)) + l:extra_offset
+-  elseif s:curr_line =~ '^\s*}'
+-    call verilog_systemverilog#Verbose("Indenting }")
+-    return indent(s:SearchForBlockStart('{', '', '}', v:lnum, 0))
+-  endif
+-
+-  " Reset indent for end blocks.
+-  if s:curr_line =~ '^\s*\<end'
+-    if s:curr_line =~ '^\s*\<endfunction\>'
+-      return indent(s:SearchBackForPattern('\<function\>'  , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endtask\>'
+-      return indent(s:SearchBackForPattern('\<task\>'      , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endclocking\>'
+-      return indent(s:SearchBackForPattern('\<clocking\>'  , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endpackage\>'
+-      return indent(s:SearchBackForPattern('\<package\>'   , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endinterface\>'
+-      return indent(s:SearchBackForPattern('\<interface\>' , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endproperty\>'
+-      return indent(s:SearchBackForPattern('\<property\>'  , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endgroup\>'
+-      return indent(s:SearchBackForPattern('\<covergroup\>', v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endgenerate\>'
+-      return indent(s:SearchBackForPattern('\<generate\>', v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endprogram\>'
+-      return indent(s:SearchBackForPattern('\<program\>', v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endspecify\>'
+-      return indent(s:SearchBackForPattern('\<specify\>'   , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endsequence\>'
+-      return indent(s:SearchBackForPattern('\<sequence\>'  , v:lnum))
+-    elseif s:curr_line =~ '^\s*\<endmodule\>'
+-      return indent(s:SearchForBlockStart('\<module\>', '', '\<endmodule\>', v:lnum, 0))
+-    elseif s:curr_line =~ '^\s*\<endclass\>'
+-      return indent(s:SearchForBlockStart('\<class\>' , '', '\<endclass\>' , v:lnum, 0))
+-    elseif s:curr_line =~ '^\s*\<end\>'
+-      let l:start_lnum = s:SearchForBlockStart('\<begin\>' , '', '\<end\>'      , v:lnum, 1)
+-      let l:start_indent = indent(l:start_lnum)
+-      if (verilog_systemverilog#VariableExists("verilog_indent_block_on_keyword"))
+-        let l:block_offset = match(getline(l:start_lnum)[l:start_indent:], 'begin')
+-        call verilog_systemverilog#Verbose('Return indent to start of block keyword (offset=' . l:block_offset . ')')
+-        return l:start_indent + l:block_offset
+-      else
+-        return l:start_indent
+-      endif
+-    elseif s:curr_line =~ '^\s*\<endcase\>'
+-      return indent(s:SearchForBlockStart(s:vlog_case , '', '\<endcase\>'  , v:lnum, 0))
+-    endif
+-  endif
+-
+-  if s:curr_line =~ '^\s*\<while\>\s*(.*'.s:vlog_end_statement
+-    return indent(s:SearchForBlockStart('\<do\>', '', '\<while\>\s*(.*'.s:vlog_end_statement, v:lnum, 1))
+-  elseif s:curr_line =~ '^\s*`\(endif\|else\|elsif\)\>'
+-    return indent(s:SearchForBlockStart(s:vlog_preproc, '`else\>\|`elsif\>', '`endif\>', v:lnum, 1))
+-  elseif s:curr_line =~ '^\s*' . s:vlog_join
+-    return indent(s:SearchForBlockStart('^\s*\<fork\>', '', s:vlog_join, v:lnum, 1))
+-  endif
+-
+-  if s:InsideSynPattern('verilogDefine', v:lnum) && s:curr_line !~ s:vlog_define
+-    return (indent(s:SearchBackForPattern(s:vlog_define, v:lnum)) + s:offset)
+-  endif
+-
+-  if s:curr_line =~ '^\s*'.s:vlog_comment.'\s*$' &&
+-        \ getline(v:lnum + 1) =~ '^\s*else'
+-    return indent(v:lnum + 1)
+-  endif
+-
+-  if s:curr_line =~ s:vlog_statement &&
+-        \ getline(v:lnum - 1) =~ '^\s*\(end\s*\)\?else\s*$'
+-    return indent(v:lnum - 1) + s:offset
+-  endif
+-
+-  return s:GetContextIndent()
+-
+-endfunction
+-
+-function! s:GetLineStripped(lnum)
+-  if s:IsComment(a:lnum)
+-    return ""
+-  endif
+-
+-  let l:temp = getline(a:lnum)
+-
+-  " Remove inline comments unless the whole line is a comment
+-  if l:temp !~ '^\s*'.s:vlog_comment.'\s*$'
+-    let l:temp = substitute(l:temp, '/\*.\{-}\*/\|//.*', '', 'g')
+-  endif
+-
+-  " Remove strings
+-  return substitute(l:temp, '".\{-}"', '""', 'g')
+-endfunction
+-
+-function! s:SearchBackForPattern(pattern, current_line_no)
+-  let l:lnum = a:current_line_no
+-
+-  while l:lnum > 0
+-    let l:lnum = search(a:pattern, 'bW')
+-    if getline(l:lnum) !~ s:vlog_comment
+-      call verilog_systemverilog#Verbose("Reset indent for context end -> " . a:keyword)
+-      return l:lnum
+-    endif
+-  endwhile
+-
+-endfunction
+-
+-" For any kind of block with a provided end pattern and start pattern, return the
+-" line of the start of the block.
+-function! s:SearchForBlockStart(start_wd, mid_wd, end_wd, current_line_no, skip_start_end)
+-  call cursor(a:current_line_no, 1)
+-
+-  " Detect whether the cursor is on a comment.
+-  let l:skip_arg  = 'synIDattr(synID(".", col("."), 0), "name") == "verilogComment"'
+-  let l:skip_arg .= ' || synIDattr(synID(".", col("."), 0), "name") == "verilogString"'
+-
+-  if a:skip_start_end == 1
+-    let l:skip_arg =
+-          \ l:skip_arg." || getline('.') =~ '".a:end_wd.'.\{-}'.a:start_wd."'"
+-  endif
+-
+-  let l:lnum = searchpair(a:start_wd, a:mid_wd, a:end_wd, 'bnW', l:skip_arg)
+-  call verilog_systemverilog#Verbose('SearchForBlockStart: ' . a:start_wd . ' returning l:lnum ' . l:lnum)
+-  return l:lnum
+-endfunction
+-
+-" Calculates the current line's indent taking into account its context
+-"
+-" It checks all lines before the current and when it finds an indenting
+-" context adds an s:offset to its indent value. Extra indent offset
+-" related with open statement, for example, are stored in l:open_offset
+-" to caculate the final indent value.
+-function! s:GetContextIndent()
+-  let l:bracket_level  = 0
+-  let l:cbracket_level = 0
+-
+-  let l:lnum = v:lnum
+-  let l:oneline_mode = 1
+-  let l:look_for_open_statement = 1
+-  let l:look_for_open_assign = 0
+-  let l:open_offset = 0
+-
+-  " Loop that searches up the file to build a context and determine the correct
+-  " indentation.
+-  while l:lnum > 1
+-
+-    let l:lnum = prevnonblank(l:lnum - 1)
+-    let l:line = getline(l:lnum)
+-
+-    " Never use comments to determine indentation.
+-    if l:line =~ '^\s*' . s:vlog_comment
+-      continue
+-    endif
+-
+-    let l:line = s:GetLineStripped(l:lnum)
+-
+-    if l:line == ""
+-      continue
+-    endif
+-
+-    call verilog_systemverilog#Verbose("GetContextIndent:" . l:lnum . ": " . l:line)
+-
+-    if l:look_for_open_statement == 1
+-      if l:line =~ s:vlog_open_statement . '\s*$' &&
+-            \ l:line !~ '/\*\s*$' ||
+-            \ s:curr_line =~ '^\s*' . s:vlog_open_statement &&
+-            \ s:curr_line !~ '^\s*/\*' &&
+-            \ s:curr_line !~ s:vlog_comment && !s:IsComment(v:lnum) ||
+-            \ l:line =~ '\<or\>' && s:InsideSynPattern("verilogExpression", l:lnum, "$")
+-        let l:open_offset = s:offset
+-        call verilog_systemverilog#Verbose("Increasing indent for an open statement.")
+-        if (!verilog_systemverilog#VariableExists("verilog_indent_assign_fix"))
+-          let l:look_for_open_assign = 1
+-        endif
+-      endif
+-      let l:look_for_open_statement = 0
+-    endif
+-
+-    if l:look_for_open_assign == 1
+-      if s:curr_line !~ s:vlog_conditional &&
+-            \ l:line =~ s:vlog_conditional &&
+-            \ index(s:verilog_disable_indent, 'conditional') < 0
+-        " Return the length of the last line up to the first character after the
+-        " first '?'
+-        return len(substitute(l:line, '?\s*\zs.*', '', ""))
+-      endif
+-      " Search for assignments (=, <=) that don't end in ";"
+-      if l:line =~ s:vlog_assign . '[^;]*$' && (!s:InsideAssign(l:lnum))
+-        if l:line !~ s:vlog_assign . '\s*$'
+-          " If there are values after the assignment, then use that column as
+-          " the indentation of the open statement.
+-          let l:assign = substitute(l:line, s:vlog_assign .'\s*\zs.*', '', "")
+-          let l:assign_offset = len(l:assign)
+-          call verilog_systemverilog#Verbose(
+-            "Increasing indent for an open assignment with values (by " . l:assign_offset .")."
+-          )
+-        else
+-          " If the assignment is empty, simply increment the indent by one
+-          " level.
+-          let l:assign_offset = indent(l:lnum) + s:offset
+-          call verilog_systemverilog#Verbose(
+-            "Increasing indent for an empty open assignment (by " . l:assign_offset .")."
+-          )
+-        endif
+-        return l:assign_offset
+-      endif
+-    endif
+-
+-    if l:line =~ '\<begin\>' && l:line !~ '\<begin\>.*\<end\>'
+-      call verilog_systemverilog#Verbose("Inside a 'begin end' block.")
+-      let l:block_offset = 0
+-      if (verilog_systemverilog#VariableExists("verilog_indent_block_on_keyword"))
+-        call verilog_systemverilog#Verbose("Matching start of block keyword")
+-        let l:block_offset = match(l:line[indent(l:lnum):], 'begin')
+-      endif
+-      return indent(l:lnum) + s:offset + l:open_offset + l:block_offset
+-    elseif l:line =~ '^\s*\<fork\>'
+-      call verilog_systemverilog#Verbose("Inside a 'fork join' block.")
+-      return indent(l:lnum) + s:offset + l:open_offset
+-    elseif l:line =~ s:vlog_case
+-      call verilog_systemverilog#Verbose("Inside a 'case' block.")
+-      return indent(l:lnum) + s:offset + l:open_offset
+-    endif
+-
+-    " If we hit an 'end', 'endcase' or 'join', skip past the whole block.
+-    if l:line =~ '\<end\>' && l:line !~ '\<begin\>.*\<end\>' && l:line !~ '\<begin\>\s*$'
+-      let l:lnum = s:SearchForBlockStart('\<begin\>', '', '\<end\>', l:lnum, 1)
+-      let l:oneline_mode = 0
+-      let l:line = s:GetLineStripped(l:lnum)
+-    endif
+-
+-    if l:line =~ s:vlog_join
+-      let l:lnum = s:SearchForBlockStart('^\s*\<fork\>', '', s:vlog_join, l:lnum, 1)
+-      let l:oneline_mode = 0
+-      let l:line = s:GetLineStripped(l:lnum)
+-    endif
+-
+-    if l:line =~ '\<endcase\>'
+-      let l:lnum = s:SearchForBlockStart(s:vlog_case, '', '\<endcase\>', l:lnum, 1)
+-      let l:oneline_mode = 0
+-      let l:line = s:GetLineStripped(l:lnum)
+-    endif
+-
+-    " Store end-of-statement indent level in case this is an instance
+-    if l:line =~ s:vlog_end_statement
+-      let l:instance_indent = indent(l:lnum)
+-      if index(s:verilog_disable_indent, 'eos') < 0
+-        let l:instance_indent -= s:offset
+-      endif
+-      call verilog_systemverilog#Verbose("Found possible end of instance on line ".l:lnum." with level ".l:instance_indent)
+-    endif
+-
+-    " If a instance port connection is found, then return previously detected instance indent level
+-    if l:line =~ '^\s*\.\k' && exists('l:instance_indent')
+-      call verilog_systemverilog#Verbose("Found instance at line ".l:lnum.". Returning previously stored indent level ".l:instance_indent)
+-      return l:instance_indent
+-    endif
+-
+-    if l:line =~ '[()]'
+-      let l:bracket_level +=
+-            \ s:CountMatches(l:line, ')') - s:CountMatches(l:line, '(')
+-      if l:bracket_level < 0
+-        call verilog_systemverilog#Verbose("Inside a '()' block.")
+-        return indent(l:lnum) + s:offset
+-      endif
+-    endif
+-
+-    if l:line =~ '[{}]'
+-      let l:cbracket_level +=
+-            \ s:CountMatches(l:line, '}') - s:CountMatches(l:line, '{')
+-      if l:cbracket_level < 0
+-        call verilog_systemverilog#Verbose("Inside a '{}' block.")
+-        return indent(l:lnum) + s:offset + l:open_offset
+-      endif
+-    endif
+-
+-    if l:oneline_mode == 1 && l:line =~ s:vlog_statement
+-      let l:oneline_mode = 0
+-    elseif l:oneline_mode == 1 && l:line =~ '\<begin\>.*\<end\>'
+-      call verilog_systemverilog#Verbose("'begin'..'end' pair.")
+-      return indent(l:lnum)
+-    elseif l:oneline_mode == 1 && l:line =~ s:vlog_block_decl && l:line !~ '\<begin\>.*\<end\>'
+-      if index(s:verilog_disable_indent, 'standalone') < 0
+-        let l:standalone = s:offset
+-      else
+-        let l:standalone = 0
+-      endif
+-      if s:curr_line =~ '^\s*\<begin\>'
+-        call verilog_systemverilog#Verbose("Standalone 'begin' after block declaration.")
+-        return indent(l:lnum) + l:standalone
+-      elseif s:curr_line =~ '^\s*{\s*$' && l:cbracket_level == 0
+-        call verilog_systemverilog#Verbose("Standalone '{' after block declaration.")
+-        return indent(l:lnum) + l:standalone
+-      elseif s:curr_line =~ '^\s*(\s*$' && l:bracket_level == 0
+-        call verilog_systemverilog#Verbose("Standalone '(' after block declaration.")
+-        return indent(l:lnum) + l:standalone
+-      else
+-        call verilog_systemverilog#Verbose("Indenting a single line block.")
+-        return indent(l:lnum) + s:offset + l:open_offset
+-      endif
+-    elseif s:curr_line =~ '^\s*else' && l:line =~ '\<\(if\|assert\)\>\s*(.*)'
+-      call verilog_systemverilog#Verbose("'else' of 'if' or 'assert'.")
+-      return indent(l:lnum)
+-    endif
+-
+-    if l:line =~ s:vlog_module
+-      return s:GetContextStartIndent("module"    , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_interface
+-      return s:GetContextStartIndent("interface" , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_class
+-      return s:GetContextStartIndent("class"     , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_package
+-      return s:GetContextStartIndent("package"   , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_covergroup
+-      return s:GetContextStartIndent("covergroup", l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_program
+-      return s:GetContextStartIndent("program"   , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_generate
+-      return s:GetContextStartIndent("generate"  , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_sequence
+-      return s:GetContextStartIndent("sequence"  , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_clocking
+-      return s:GetContextStartIndent("clocking"  , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_property
+-      return s:GetContextStartIndent("property"  , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_method && s:InsideSynPattern('verilog\(Task\|Function\)', l:lnum, "$")
+-      return s:GetContextStartIndent("method"    , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_preproc
+-      return s:GetContextStartIndent("preproc"   , l:lnum) + l:open_offset
+-    elseif l:line =~ s:vlog_context_end
+-      call verilog_systemverilog#Verbose("After the end of a context.")
+-      return indent(l:lnum)
+-    endif
+-
+-  endwhile
+-
+-  " Return any calculated extra offset if no indenting context was found
+-  return l:open_offset
+-endfunction
+-
+-function! s:GetContextStartIndent(name, lnum)
+-  call verilog_systemverilog#Verbose("Inside a " . a:name . ".")
+-  if index(s:verilog_disable_indent, a:name) >= 0
+-    return indent(a:lnum)
+-  else
+-    return indent(a:lnum) + s:offset
+-endfunction
+-
+-function! s:CountMatches(line, pattern)
+-  return len(split(a:line, a:pattern, 1)) - 1
+-endfunction
+-
+-function! s:IsComment(lnum)
+-  return synIDattr(synID(a:lnum, 1, 0), "name") == "verilogComment"
+-endfunction
+-
+-function! s:InsideAssign(lnum)
+-  return synIDattr(synID(a:lnum, 1, 0), "name") == "verilogAssign"
+-endfunction
+-
+-function! s:InsideSynPattern(pattern, lnum, ...)
+-  " Check for optional column number/pattern
+-  if a:0 >= 1
+-    let l:cnum = a:1
+-  else
+-    let l:cnum = 1
+-  endif
+-  " Determine column number if using a pattern
+-  if type(l:cnum) != 0
+-    let l:cnum = col([a:lnum, l:cnum])
+-  endif
+-
+-  for id in synstack(a:lnum, l:cnum)
+-    if synIDattr(id, "name") =~ a:pattern
+-      return 1
+-    endif
+-  endfor
+-  return 0
+-endfunction
+-
+-" vi: sw=2 sts=2:
+diff --git a/plugin/verilog_systemverilog.vim b/plugin/verilog_systemverilog.vim
+index 6edda98..9835908 100644
+--- a/plugin/verilog_systemverilog.vim
++++ b/plugin/verilog_systemverilog.vim
+@@ -27,10 +27,10 @@ command! -nargs=+ -complete=customlist,verilog_systemverilog#CompleteCommand
+             \ call verilog_systemverilog#PopFromVariable('verilog_efm_uvm_lst', '<args>')
+ 
+ " Configure tagbar
+-if !exists("g:tagbar_type_verilog_systemverilog")
++if !exists("g:tagbar_type_systemverilog")
+     " This requires a recent version of universal-ctags
+-    let g:tagbar_type_verilog_systemverilog = {
+-        \ 'ctagstype'   : 'SystemVerilog',
++    let g:tagbar_type_systemverilog = {
++        \ 'ctagstype'   : 'systemverilog',
+         \ 'kinds'       : [
+             \ 'b:blocks:1:1',
+             \ 'c:constants:1:0',
+diff --git a/syntax/verilog_systemverilog.vim b/syntax/verilog_systemverilog.vim
+deleted file mode 100644
+index f495217..0000000
+--- a/syntax/verilog_systemverilog.vim
++++ /dev/null
+@@ -1,404 +0,0 @@
+-" Vim syntax file
+-" Language:	SystemVerilog (superset extension of Verilog)
+-
+-" Extends Verilog syntax
+-" Requires $VIMRUNTIME/syntax/verilog.vim to exist
+-
+-" For version 5.x: Clear all syntax items
+-" For version 6.x: Quit when a syntax file was already loaded
+-if version < 600
+-   syntax clear
+-elseif exists("b:current_syntax")
+-   finish
+-endif
+-
+-" Override 'iskeyword'
+-if version >= 600
+-   setlocal iskeyword=@,48-57,_,192-255
+-else
+-   set iskeyword=@,48-57,_,192-255
+-endif
+-
+-" Store cpoptions
+-let oldcpo=&cpoptions
+-set cpo-=C
+-
+-syn sync lines=1000
+-
+-"##########################################################
+-"       SystemVerilog Syntax
+-"##########################################################
+-
+-syn keyword verilogStatement   always and assign automatic buf
+-syn keyword verilogStatement   bufif0 bufif1 cell cmos
+-syn keyword verilogStatement   config deassign defparam design
+-syn keyword verilogStatement   disable edge endconfig
+-syn keyword verilogStatement   endgenerate
+-syn keyword verilogStatement   endprimitive endtable
+-syn keyword verilogStatement   event force fork join
+-syn keyword verilogStatement   join_any join_none forkjoin
+-syn keyword verilogStatement   generate genvar highz0 highz1 ifnone
+-syn keyword verilogStatement   incdir include initial inout input
+-syn keyword verilogStatement   instance integer large liblist
+-syn keyword verilogStatement   library localparam macromodule medium
+-syn keyword verilogStatement   nand negedge nmos nor
+-syn keyword verilogStatement   noshowcancelled not notif0 notif1 or
+-syn keyword verilogStatement   output parameter pmos posedge primitive
+-syn keyword verilogStatement   pull0 pull1 pulldown pullup
+-syn keyword verilogStatement   pulsestyle_onevent pulsestyle_ondetect
+-syn keyword verilogStatement   rcmos real realtime reg release
+-syn keyword verilogStatement   rnmos rpmos rtran rtranif0 rtranif1
+-syn keyword verilogStatement   scalared showcancelled signed small
+-syn keyword verilogStatement   specparam strong0 strong1
+-syn keyword verilogStatement   supply0 supply1 table time tran
+-syn keyword verilogStatement   tranif0 tranif1 tri tri0 tri1 triand
+-syn keyword verilogStatement   trior trireg unsigned use vectored wait
+-syn keyword verilogStatement   wand weak0 weak1 wire wor xnor xor
+-syn keyword verilogStatement   semaphore mailbox
+-
+-syn keyword verilogStatement   always_comb always_ff always_latch
+-syn keyword verilogStatement   checker endchecker
+-syn keyword verilogStatement   virtual local const protected
+-syn keyword verilogStatement   package endpackage
+-syn keyword verilogStatement   rand randc constraint randomize
+-syn keyword verilogStatement   with inside dist
+-syn keyword verilogStatement   randcase
+-syn keyword verilogStatement   randsequence
+-syn keyword verilogStatement   get_randstate set_randstate
+-syn keyword verilogStatement   srandom
+-syn keyword verilogStatement   logic bit byte time
+-syn keyword verilogStatement   int longint shortint
+-syn keyword verilogStatement   struct packed
+-syn keyword verilogStatement   final
+-syn keyword verilogStatement   import
+-syn keyword verilogStatement   context pure
+-syn keyword verilogStatement   void shortreal chandle string
+-syn keyword verilogStatement   modport
+-syn keyword verilogStatement   cover coverpoint
+-syn keyword verilogStatement   program endprogram
+-syn keyword verilogStatement   bins binsof illegal_bins ignore_bins
+-syn keyword verilogStatement   alias matches solve static assert
+-syn keyword verilogStatement   assume before expect bind
+-syn keyword verilogStatement   extends tagged extern
+-syn keyword verilogStatement   first_match throughout timeprecision
+-syn keyword verilogStatement   timeunit priority type union
+-syn keyword verilogStatement   uwire var cross ref wait_order intersect
+-syn keyword verilogStatement   wildcard within
+-syn keyword verilogStatement   triggered
+-syn keyword verilogStatement   std
+-syn keyword verilogStatement   accept_on eventually global implements implies
+-syn keyword verilogStatement   interconnect let nettype nexttime reject_on restrict soft
+-syn keyword verilogStatement   s_always s_eventually s_nexttime s_until s_until_with
+-syn keyword verilogStatement   strong sync_accept_on sync_reject_on unique unique0
+-syn keyword verilogStatement   until until_with untyped weak
+-
+-syn keyword verilogTypeDef     enum
+-
+-syn keyword verilogConditional iff
+-syn keyword verilogConditional if else case casex casez default endcase
+-
+-syn keyword verilogRepeat      forever repeat while for
+-syn keyword verilogRepeat      return break continue
+-syn keyword verilogRepeat      do while foreach
+-
+-syn match   verilogGlobal      "`[a-zA-Z_][a-zA-Z0-9_$]\+"
+-syn match   verilogGlobal      "$[a-zA-Z0-9_$]\+"
+-
+-if !exists('g:verilog_disable_constant_highlight')
+-    syn match   verilogConstant    "\<[A-Z][A-Z0-9_$]*\>"
+-endif
+-
+-syn match   verilogNumber      "\(\d\+\)\?'[sS]\?[bB]\s*[0-1_xXzZ?]\+"
+-syn match   verilogNumber      "\(\d\+\)\?'[sS]\?[oO]\s*[0-7_xXzZ?]\+"
+-syn match   verilogNumber      "\(\d\+\)\?'[sS]\?[dD]\s*[0-9_xXzZ?]\+"
+-syn match   verilogNumber      "\(\d\+\)\?'[sS]\?[hH]\s*[0-9a-fA-F_xXzZ?]\+"
+-syn match   verilogNumber      "\<[+-]\?[0-9_]\+\(\.[0-9_]*\)\?\(e[0-9_]*\)\?\>"
+-syn match   verilogNumber      "\<\d[0-9_]*\(\.[0-9_]\+\)\=\([fpnum]\)\=s\>"
+-syn keyword verilogNumber      1step
+-
+-syn keyword verilogTodo        contained TODO FIXME
+-
+-syn match   verilogOperator    "[&|~><!)(*#%@+/=?:;}{,.\^\-\[\]]"
+-
+-syn region  verilogString      start=+"+ skip=+\\"+ end=+"+ contains=verilogEscape,@Spell
+-syn match   verilogEscape      +\\[nt"\\]+ contained
+-syn match   verilogEscape      "\\\o\o\=\o\=" contained
+-
+-syn keyword verilogMethod      new
+-if v:version >= 704
+-    syn match   verilogMethod  "\(\(\s\|[(/]\|^\)\.\)\@2<!\<\w\+\ze#\?("
+-else
+-    syn match   verilogMethod  "\(\(\s\|[(/]\|^\)\.\)\@<!\<\w\+\ze#\?("
+-endif
+-
+-syn match   verilogLabel       "\<\k\+\>\ze\s*:\s*\<\(assert\|assume\|cover\(point\)\?\|cross\)\>"
+-if v:version >= 704
+-    syn match   verilogLabel   "\(\<\(begin\|end\)\>\s*:\s*\)\@20<=\<\k\+\>"
+-else
+-    syn match   verilogLabel   "\(\<\(begin\|end\)\>\s*:\s*\)\@<=\<\k\+\>"
+-endif
+-
+-syn keyword verilogObject      super null this
+-syn match   verilogObject      "\<\w\+\ze\(::\|\.\)" contains=verilogNumber
+-
+-
+-" Create syntax definition from g:verilog_syntax dictionary
+-function! s:SyntaxCreate(name, verilog_syntax)
+-    if exists('a:verilog_syntax[a:name]')
+-        let verilog_syn_region_name = 'verilog'.substitute(a:name, '.*', '\u&', '')
+-        for entry in a:verilog_syntax[a:name]
+-            if exists('entry["match"]')
+-                " syn-match definitions
+-                let match = entry["match"]
+-                let verilog_syn_match_cmd = 'syn match '.verilog_syn_region_name.' "'.match.'"'
+-
+-                if exists('entry["syn_argument"]')
+-                    let verilog_syn_match_cmd .= ' '.entry["syn_argument"]
+-                endif
+-
+-                execute verilog_syn_match_cmd
+-            elseif exists('entry["match_start"]') && exists('entry["match_end"]')
+-                " syn-region definitions
+-
+-                let region_start = entry["match_start"]
+-                let region_end = entry["match_end"]
+-
+-                if verilog_systemverilog#VariableExists('verilog_quick_syntax')
+-                    execute 'syn keyword verilogStatement '.region_start.' '.region_end
+-                else
+-                    let verilog_syn_region_cmd = 'syn region '.verilog_syn_region_name
+-
+-                    if exists('entry["highlight"]')
+-                        let verilog_syn_region_cmd .= ' matchgroup='.entry["highlight"]
+-                    endif
+-
+-                    let verilog_syn_region_cmd .=
+-                        \  ' start="'.region_start.'"'
+-                        \ .' end="'.region_end.'"'
+-
+-                    " Always skip inline comments
+-                    if a:name != "comment" && exists('a:verilog_syntax["comment"]')
+-                        let verilog_syn_region_cmd .= ' skip="'
+-                        for comment_entry in a:verilog_syntax["comment"]
+-                            if exists('comment_entry["match"]')
+-                                let verilog_syn_region_cmd .= comment_entry["match"]
+-                            endif
+-                        endfor
+-                        let verilog_syn_region_cmd .= '"'
+-                    endif
+-
+-                    if exists('entry["syn_argument"]')
+-                        let verilog_syn_region_cmd .= ' '.entry["syn_argument"]
+-                    endif
+-
+-                    if !exists('entry["no_fold"]')
+-                        if (index(s:verilog_syntax_fold, a:name) >= 0 || index(s:verilog_syntax_fold, "all") >= 0)
+-                            let verilog_syn_region_cmd .= ' fold'
+-                        endif
+-                    endif
+-
+-                    execute verilog_syn_region_cmd
+-                endif
+-            elseif exists('entry["cluster"]')
+-                " syn-cluster definitions
+-
+-                execute 'syn cluster '.verilog_syn_region_name.' contains='.entry["cluster"]
+-            elseif exists('entry["keyword"]')
+-                " syn-cluster definitions
+-
+-                execute 'syn keyword '.verilog_syn_region_name.' '.entry["keyword"]
+-            else
+-                echoerr 'Incorrect syntax defintion for '.a:name
+-            endif
+-        endfor
+-    end
+-endfunction
+-
+-" Only enable folding if verilog_syntax_fold_lst is defined
+-let s:verilog_syntax_fold=verilog_systemverilog#VariableGetValue("verilog_syntax_fold_lst")
+-
+-" Syntax priority list
+-let s:verilog_syntax_order = [
+-            \ 'baseCluster',
+-            \ 'statement',
+-            \ 'assign',
+-            \ 'attribute',
+-            \ 'instance',
+-            \ 'prototype',
+-            \ 'class',
+-            \ 'clocking',
+-            \ 'covergroup',
+-            \ 'define',
+-            \ 'export',
+-            \ 'expression',
+-            \ 'function',
+-            \ 'interface',
+-            \ 'module',
+-            \ 'property',
+-            \ 'sequence',
+-            \ 'specify',
+-            \ 'task',
+-            \ 'typedef',
+-            \ ]
+-
+-" Generate syntax definitions for supported types
+-for name in s:verilog_syntax_order
+-    call s:SyntaxCreate(name, g:verilog_syntax)
+-endfor
+-
+-if index(s:verilog_syntax_fold, "block_nested") >= 0 || index(s:verilog_syntax_fold, "block_named") >= 0
+-    if index(s:verilog_syntax_fold, "block_nested") >= 0
+-        syn region verilogBlock
+-            \ matchgroup=verilogStatement
+-            \ start="\<begin\>"
+-            \ end="\<end\>.*\<begin\>"ms=s-1,me=s-1
+-            \ fold
+-            \ transparent
+-            \ contained
+-            \ nextgroup=verilogBlockEnd
+-            \ contains=TOP
+-        syn region verilogBlockEnd
+-            \ matchgroup=verilogStatement
+-            \ start="\<end\>.*\<begin\>"
+-            \ end="\<end\>\ze.*\(\<begin\>\)\@!"
+-            \ fold
+-            \ transparent
+-            \ contained
+-            \ contains=TOP
+-        syn match verilogStatement "\<end\>"
+-    else "block_named
+-        syn region verilogBlock
+-            \ matchgroup=verilogStatement
+-            \ start="\<begin\>"
+-            \ end="\<end\>"
+-            \ transparent
+-            \ contained
+-            \ contains=TOP
+-        syn region verilogBlockNamed
+-            \ matchgroup=verilogStatement
+-            \ start="\<begin\>\ze\s*:\s*\z(\w\+\)"
+-            \ end="\<end\>"
+-            \ transparent
+-            \ fold
+-            \ contained
+-            \ contains=TOP
+-        "TODO break up if...else statements
+-    endif
+-    syn region verilogBlockContainer
+-        \ start="\<begin\>"
+-        \ end="\<end\>"
+-        \ skip="/[*/].*"
+-        \ transparent
+-        \ keepend extend
+-        \ contains=verilogBlock,verilogBlockNamed,verilogBlockEnd
+-elseif index(s:verilog_syntax_fold, "block") >= 0 || index(s:verilog_syntax_fold, "all") >= 0
+-    syn region verilogBlock
+-        \ matchgroup=verilogStatement
+-        \ start="\<begin\>"
+-        \ end="\<end\>"
+-        \ transparent
+-        \ fold
+-else
+-    syn keyword verilogStatement  begin end
+-endif
+-
+-if index(s:verilog_syntax_fold, "define") >= 0 || index(s:verilog_syntax_fold, "all") >= 0
+-    syn region verilogIfdef
+-        \ start="`ifn\?def\>"
+-        \ end="^\s*`els\(e\|if\)\>"ms=s-1,me=s-1
+-        \ fold transparent
+-        \ keepend
+-        \ contained
+-        \ nextgroup=verilogIfdefElse,verilogIfdefEndif
+-        \ contains=TOP
+-    syn region verilogIfdefElse
+-        \ start="`els\(e\|if\)\>"
+-        \ end="^\s*`els\(e\|if\)\>"ms=s-1,me=s-1
+-        \ fold transparent
+-        \ keepend
+-        \ contained
+-        \ nextgroup=verilogIfdefElse,verilogIfdefEndif
+-        \ contains=TOP
+-    syn region verilogIfdefEndif
+-        \ start="`else\>"
+-        \ end="`endif\>"
+-        \ fold transparent
+-        \ keepend
+-        \ contained
+-        \ contains=TOP
+-    syn region verilogIfdefContainer
+-        \ start="`ifn\?def\>"
+-        \ end="`endif\>"
+-        \ skip="/[*/].*"
+-        \ transparent
+-        \ keepend extend
+-        \ contains=verilogIfdef,verilogIfdefElse,verilogIfdefEndif
+-endif
+-
+-" Generate syntax definitions for comments after other standard syntax
+-" definitions to guarantee highest priority
+-for name in ['comment']
+-    call s:SyntaxCreate(name, g:verilog_syntax)
+-endfor
+-
+-" Generate syntax definitions for custom types last to allow overriding
+-" standard syntax
+-if exists('g:verilog_syntax_custom')
+-    for name in keys(g:verilog_syntax_custom)
+-        call s:SyntaxCreate(name, g:verilog_syntax_custom)
+-    endfor
+-endif
+-
+-" Special comments: Synopsys directives
+-syn match   verilogDirective   "//\s*synopsys\>.*$"
+-syn region  verilogDirective   start="/\*\s*synopsys\>" end="\*/"
+-syn region  verilogDirective   start="//\s*synopsys \z(\w*\)begin\>" end="//\s*synopsys \z1end\>"
+-
+-syn match   verilogDirective   "//\s*\$s\>.*$"
+-syn region  verilogDirective   start="/\*\s*\$s\>" end="\*/"
+-syn region  verilogDirective   start="//\s*\$s dc_script_begin\>" end="//\s*\$s dc_script_end\>"
+-
+-"Modify the following as needed.  The trade-off is performance versus
+-"functionality.
+-syn sync minlines=50
+-
+-" Define the default highlighting.
+-" For version 5.7 and earlier: only when not done already
+-" For version 5.8 and later: only when an item doesn't have highlighting yet
+-if version >= 508 || !exists("did_verilog_syn_inits")
+-   if version < 508
+-      let did_verilog_syn_inits = 1
+-      command -nargs=+ HiLink hi link <args>
+-   else
+-      command -nargs=+ HiLink hi def link <args>
+-   endif
+-
+-   " The default highlighting.
+-   HiLink verilogCharacter       Character
+-   HiLink verilogConditional     Conditional
+-   HiLink verilogRepeat          Repeat
+-   HiLink verilogString          String
+-   HiLink verilogTodo            Todo
+-   HiLink verilogComment         Comment
+-   HiLink verilogConstant        Constant
+-   HiLink verilogLabel           Tag
+-   HiLink verilogNumber          Number
+-   HiLink verilogOperator        Special
+-   HiLink verilogPrototype       Statement
+-   HiLink verilogStatement       Statement
+-   HiLink verilogGlobal          Define
+-   HiLink verilogDirective       SpecialComment
+-   HiLink verilogEscape          Special
+-   HiLink verilogMethod          Function
+-   HiLink verilogTypeDef         TypeDef
+-   HiLink verilogObject          Type
+-
+-   delcommand HiLink
+-endif
+-
+-let b:current_syntax = "verilog_systemverilog"
+-
+-" Restore cpoptions
+-let &cpoptions=oldcpo
+-
+-" vim: sts=4 sw=4
