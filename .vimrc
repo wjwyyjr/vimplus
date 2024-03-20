@@ -100,7 +100,19 @@ if has("gui_running")
     if system == "Darwin\n"
         set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ Complete:h18 " 设置字体
     else
-        set guifont=DroidSansMono\ Nerd\ Font\ Regular\ 18      " 设置字体
+        " set guifont=DroidSansMono\ Nerd\ Font\ Regular\ 18
+        " set guifont=DejaVuSansM\ Nerd\ Font\ 10
+        " set guifont=DejaVuSansM\ Nerd\ Font\ Mono\ 10
+        " set guifont=DejaVuSansM\ Nerd\ Font\ Propo\ 10
+        " set guifont=DroidSansM\ Nerd\ Font\ 10
+        " set guifont=DroidSansM\ Nerd\ Font\ Mono\ 10
+        " set guifont=DroidSansM\ Nerd\ Font\ Propo\ 10
+        set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
+        " set guifont=FiraCode\ Nerd\ Font\ Propo\ 10
+        " set guifont=FiraCode\ Nerd\ Font\ Regular\ 10
+        " set guifont=Hack\ Nerd\ Font\ 10
+        " set guifont=Hack\ Nerd\ Font\ Mono\ 10
+        " set guifont=Hack\ Nerd\ Font\ Propo\ 10
     endif
     set guioptions-=m           " 隐藏菜单栏
     set guioptions-=T           " 隐藏工具栏
@@ -110,8 +122,8 @@ if has("gui_running")
     set showtabline=0           " 隐藏Tab栏
     "set guicursor=n-v-c:ver5   " 设置光标为竖线
     set guicursor=a:block
-    " winpos 100 100              " 设置初始界面位置
-    " set lines=40 columns=120    " 设置初始界面大小
+    winpos 100 100              " 设置初始界面位置
+    set lines=40 columns=120    " 设置初始界面大小
     " for plug
     let g:interestingWordsGUIColors = ['#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF']
 endif
@@ -144,14 +156,15 @@ Plug 'Yggdroot/LeaderF'
 Plug 'mileszs/ack.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
-Plug 'jiangmiao/auto-pairs'
+Plug 'LunarWatcher/auto-pairs'
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-endwise'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -175,7 +188,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'skywind3000/vim-dict'
 Plug 'vim-syntastic/syntastic'
-Plug 'vhda/verilog_systemverilog.vim'
+Plug 'wjwyyjr/verilog_systemverilog.vim'
 Plug 'lfv89/vim-interestingwords'
 " rainbow confilct with auto-pairs, maybe resolve later
 " Plug 'frazrepo/vim-rainbow'
@@ -183,6 +196,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'yegappan/mru'
 
 " test
 Plug '~/.vim/plugged/potion'
@@ -192,13 +206,15 @@ if filereadable(expand($HOME . '/.vimrc.custom.plugins'))
     source $HOME/.vimrc.custom.plugins
 endif
 
+set encoding=UTF-8
+
 call plug#end()  
 
 " load vim default plugin
 runtime macros/matchit.vim
 
 " 编辑vimrc相关配置文件
-nnoremap <leader>e :edit $MYVIMRC<cr>
+nnoremap <leader>e  :edit $MYVIMRC<cr>
 nnoremap <leader>vc :edit ~/.vimrc.custom.config<cr>
 nnoremap <leader>vp :edit ~/.vimrc.custom.plugins<cr>
 
@@ -234,12 +250,14 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 " 主题设置
 set background=dark
 let g:onedark_termcolors=256
-" colorscheme onedark
-colorscheme gruvbox
+colorscheme onedark
+" colorscheme gruvbox
+" colorscheme badwolf
 
 " airline
-" let g:airline_theme="onedark"
-let g:airline_theme="gruvbox"
+let g:airline_theme="onedark"
+" let g:airline_theme="gruvbox"
+" let g:airline_theme="badwolf"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
@@ -264,6 +282,12 @@ nmap <leader>0 <Plug>AirlineSelectTab0
 nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
 
+" auto-pairs
+let g:AutoPairsCompatibleMaps = 1
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsMapBS = 1
+let g:AutoPairsMultilineBackspace = 1
+au FileType verilog,systemverilog let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
 
 " cpp-mode
 nnoremap <leader>y :CopyCode<cr>
@@ -303,13 +327,20 @@ nnoremap <leader>r :ReplaceTo<space>
 " nerdtree
 "nnoremap <silent> <leader>n :NERDTreeToggle<cr>
 nnoremap <silent> wm :NERDTreeToggle<cr>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-let g:NERDTreeHighlightFolders = 1         
-let g:NERDTreeHighlightFoldersFullName = 1 
-let g:NERDTreeDirArrowExpandable='▷'
-let g:NERDTreeDirArrowCollapsible='▼'
+let g:NERDTreeExactMatchHighlightFullName    = 1
+let g:NERDTreePatternMatchHighlightFullName  = 1
+let g:NERDTreeHighlightFolders               = 1
+let g:NERDTreeHighlightFoldersFullName       = 1
+let g:NERDTreeDirArrowExpandable           = ''
+let g:NERDTreeDirArrowCollapsible          = ''
+" let g:NERDTreeDirArrowExpandable           = '▷'
+" let g:NERDTreeDirArrowCollapsible          = '▼'
+let g:NERDTreeShowHidden                     = 0    " Don't show hidden files
+let NERDTreeQuitOnOpen                       = 1    " Close NERDtree when files was opened
+let NERDTreeMinimalUI                        = 1    " Start NERDTree in minimal UI mode (No help lines)
+" let NERDTreeChDirMode                      = 2    " Change current working directory based on root directory in NERDTree
 
 " YCM
 " 如果不指定python解释器路径，ycm会自己搜索一个合适的(与编译ycm时使用的python版本匹配)
@@ -336,7 +367,7 @@ let g:ycm_semantic_triggers =  {
             \ }
 nnoremap <leader>u :YcmCompleter GoToDeclaration<cr>
 " 已经使用cpp-mode插件提供的转到函数实现的功能
-" nnoremap <leader>i :YcmCompleter GoToDefinition<cr> 
+nnoremap <leader>i :YcmCompleter GoToDefinition<cr> 
 nnoremap <leader>o :YcmCompleter GoToInclude<cr>
 nnoremap <leader>ff :YcmCompleter FixIt<cr>
 nmap <F5> :YcmDiags<cr>
@@ -424,6 +455,12 @@ nnoremap <silent> <F8> :ToggleBufExplorer<CR>
 " asyncrun
 nnoremap sh :AsyncRun -mode=term -pos=gnome 
 
+" verilog_systemverilog
+nnoremap <leader>u :VerilogGotoInstanceStart<CR>
+nnoremap <leader>i :VerilogFollowInstance<CR>
+nnoremap <leader>o :VerilogReturnInstance<CR>
+nnoremap <leader>I :VerilogFollowPort<CR>
+
 " ultisnipet
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -436,6 +473,26 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 " let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 
+" nerdcommenter
+let g:NERDDefaultAlign = 'left'
+let g:NERDSpaceDelims = 1
+
+" devicons
+let g:webdevicons_enable                      = 1 " loading the plugin
+let g:webdevicons_enable_nerdtree             = 1 " adding the flags to NERDTree
+let g:webdevicons_enable_airline_tabline      = 1 " adding to vim-airline's tabline
+let g:webdevicons_enable_airline_statusline   = 1 " adding to vim-airline's statusline
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1 " Force extra padding in NERDTree so that the filetype icons line up vertically
+let g:WebDevIconsUnicodeGlyphDoubleWidth      = 0
+let g:WebDevIconsUnicodeDecorateFolderNodes   = 1
+
+" mru
+nnoremap <F2> :MRU<cr>
+
+" fugitive
+nnoremap <leader>gs :Git<cr>
+nnoremap <leader>gd :Git diff % <cr>  " git diff for the current file
+
 nnoremap ww       :set wrap!<cr>
 noremap  <space>  *N
 :cabbrev h vert h
@@ -443,13 +500,12 @@ noremap  <space>  *N
 " filelist
 au BufNewFile,BufRead *.f set ft=filelist
 
+" vim-rainbow
 let g:rainbow_active = 1
+nnoremap <A-1> :RainbowToggle<cr>
 
 " 加载自定义配置
 if filereadable(expand($HOME . '/.vimrc.custom.config'))
     source $HOME/.vimrc.custom.config
 endif
-
-" My Configuration
-set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ 10
 
