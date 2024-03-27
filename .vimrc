@@ -123,7 +123,7 @@ if has("gui_running")
     "set guicursor=n-v-c:ver5   " 设置光标为竖线
     set guicursor=a:block
     winpos 100 100              " 设置初始界面位置
-    set lines=40 columns=120    " 设置初始界面大小
+    set lines=45 columns=150    " 设置初始界面大小
     " for plug
     let g:interestingWordsGUIColors = ['#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF']
 endif
@@ -182,9 +182,9 @@ Plug 'Shougo/echodoc.vim'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'rhysd/clever-f.vim'
 Plug 'vim-scripts/indentpython.vim'
-Plug 'junegunn/vim-easy-align'
 
 " add wangjing
+Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'skywind3000/vim-dict'
 Plug 'vim-syntastic/syntastic'
@@ -197,6 +197,12 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'yegappan/mru'
+Plug 'vim-scripts/VisIncr'
+Plug 'HonkW93/automatic-verilog'
+Plug 'kqito/vim-easy-replace'
+Plug 'brooth/far.vim'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " test
 Plug '~/.vim/plugged/potion'
@@ -338,7 +344,7 @@ let g:NERDTreeDirArrowCollapsible          = ''
 " let g:NERDTreeDirArrowExpandable           = '▷'
 " let g:NERDTreeDirArrowCollapsible          = '▼'
 let g:NERDTreeShowHidden                     = 0    " Don't show hidden files
-let NERDTreeQuitOnOpen                       = 1    " Close NERDtree when files was opened
+" let NERDTreeQuitOnOpen                       = 1    " Close NERDtree when files was opened
 let NERDTreeMinimalUI                        = 1    " Start NERDTree in minimal UI mode (No help lines)
 " let NERDTreeChDirMode                      = 2    " Change current working directory based on root directory in NERDTree
 
@@ -351,6 +357,7 @@ let g:ycm_warning_symbol = '✹'
 let g:ycm_seed_identifiers_with_syntax = 1 
 let g:ycm_complete_in_comments = 1 
 let g:ycm_complete_in_strings = 1 
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_semantic_triggers =  {
             \   'c' : ['->', '.','re![_a-zA-z0-9]'],
@@ -447,7 +454,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_<filetype>_checkers = ['<checker-name>']
 
-nnoremap sck      :SyntasticCheck<cr>
+nnoremap <leader>ck      :SyntasticCheck<cr>
 
 " bufexplorer
 nnoremap <silent> <F8> :ToggleBufExplorer<CR>
@@ -463,15 +470,15 @@ nnoremap <leader>I :VerilogFollowPort<CR>
 
 " ultisnipet
 " make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:SuperTabDefaultCompletionType    = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-" let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsExpandTrigger         = "<tab>"
+" let g:UltiSnipsJumpForwardTrigger  = "<tab>"
 " let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsEditSplit             = "vertical"
 
 " nerdcommenter
 let g:NERDDefaultAlign = 'left'
@@ -493,16 +500,51 @@ nnoremap <F2> :MRU<cr>
 nnoremap <leader>gs :Git<cr>
 nnoremap <leader>gd :Git diff % <cr>  " git diff for the current file
 
-nnoremap ww       :set wrap!<cr>
-noremap  <space>  *N
-:cabbrev h vert h
-
 " filelist
 au BufNewFile,BufRead *.f set ft=filelist
 
 " vim-rainbow
 let g:rainbow_active = 1
 nnoremap <A-1> :RainbowToggle<cr>
+
+" automatic-verilog
+let g:atv_snippet_att_en        = 1                        " auto load the template
+let g:atv_snippet_project       = 'IC_Design'
+let g:atv_snippet_company       = ''
+let g:atv_snippet_device        = ''
+let g:atv_snippet_author        = 'Bruce Wang'
+let g:atv_snippet_email         = 'wjwyyjr@gmail.com'
+let g:atv_snippet_website       = ''
+let g:atv_autoinst_add_dir      = 1                        " add instance file location
+let g:atv_autopara_only_port    = 1                        " get parameter related to port
+let g:atv_autodef_mv            = 1
+let g:atv_crossdir_mode         = 1                        " 0:normal 1:filelist 2:tags
+let g:atv_crossdir_flist_browse = 1                        " find the filelist
+let g:atv_crossdir_flist_file   = '../filelist/filelist.f'
+let g:atv_rtl_recursive         = 1                        " RtlTree recursive
+
+nnoremap <leader>ii  :call g:AutoInst(0)<esc>
+nnoremap <leader>ip  :call g:AutoPara(0)<esc>
+nnoremap <leader>ipv :call g:AutoParaValue(0)<esc>
+nnoremap <leader>ir  :call g:AutoReg()<esc>
+nnoremap <leader>iw  :call g:AutoWire()<esc>
+nnoremap <leader>id  :call g:AutoDef()<esc>
+nnoremap <leader>it  :RtlTree<cr>
+
+" markdown-preview
+let g:mkdp_auto_start         = 1
+let g:mkdp_auto_open          = 1
+let g:mkdp_auto_close         = 1
+let g:mkdp_refresh_slow       = 0
+let g:mkdp_command_for_global = 0
+
+nmap <silent> <C-M> <Plug>MarkdownPreviewToggle
+imap <silent> <C-M> <Plug>MarkdownPreviewToggle
+
+" custom
+nnoremap <leader>ww       :set wrap!<cr>
+noremap  <space>  *N
+:cabbrev h vert h
 
 " 加载自定义配置
 if filereadable(expand($HOME . '/.vimrc.custom.config'))
