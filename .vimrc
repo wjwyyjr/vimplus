@@ -149,7 +149,7 @@ Plug 'chxuan/change-colorscheme'
 Plug 'chxuan/prepare-code'
 Plug 'chxuan/vim-buffer'
 Plug 'chxuan/vimplus-startify'
-Plug 'preservim/tagbar'
+" Plug 'preservim/tagbar'
 Plug 'ervandew/supertab' " add for ultisnipet
 Plug 'Valloric/YouCompleteMe'
 Plug 'Yggdroot/LeaderF'
@@ -290,7 +290,7 @@ nmap <leader>+ <Plug>AirlineSelectNextTab
 
 " auto-pairs
 let g:AutoPairsCompatibleMaps = 1
-let g:AutoPairsFlyMode = 1
+let g:AutoPairsFlyMode = 0
 let g:AutoPairsMapBS = 1
 let g:AutoPairsMultilineBackspace = 1
 au FileType verilog,systemverilog let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
@@ -380,8 +380,8 @@ nnoremap <leader>ff :YcmCompleter FixIt<cr>
 nmap <F5> :YcmDiags<cr>
 
 " tagbar
-let g:tagbar_width = 30
-nnoremap <silent> <leader>t :TagbarToggle<cr>
+" let g:tagbar_width = 30
+" nnoremap <silent> <leader>t :TagbarToggle<cr>
 set tags+=../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
 
 " incsearch.vim
@@ -409,12 +409,17 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
             \ }
 
 " LeaderF
-nnoremap <leader>f :LeaderfFile .<cr>
-let g:Lf_WildIgnore = {
+nnoremap <leader>f :LeaderfFunction!<cr>
+let g:Lf_ShortcutF        = "<tab>"
+let g:Lf_WildIgnore       = {
             \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh'],
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
             \}
-let g:Lf_UseCache = 0
+let g:Lf_UseCache         = 0
+let g:Lf_WindowHeight     = 0.30
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp         = 1
+" let g:Lf_PreviewResult  = {'Function':0, 'Colorscheme':1}
 
 " ack
 nnoremap <leader>F :Ack!<space>
@@ -467,6 +472,7 @@ nnoremap <leader>u :VerilogGotoInstanceStart<CR>
 nnoremap <leader>i :VerilogFollowInstance<CR>
 nnoremap <leader>o :VerilogReturnInstance<CR>
 nnoremap <leader>I :VerilogFollowPort<CR>
+" nnoremap <leader>v :VerilogFormat<CR>  
 
 " ultisnipet
 " make YCM compatible with UltiSnips (using supertab)
@@ -544,6 +550,14 @@ imap <silent> <C-M> <Plug>MarkdownPreviewToggle
 " custom
 nnoremap <leader>ww       :set wrap!<cr>
 noremap  <space>  *N
+nnoremap <leader>v        :!verilog-format --inplace --column_limit=200 --indentation_spaces=4 --assignment_statement_alignment=align 
+            \--case_items_alignment=align --class_member_variable_alignment=align --distribution_items_alignment=align 
+            \--enum_assignment_statement_alignment=align --formal_parameters_alignment=align --formal_parameters_indentation=indent 
+            \--module_net_variable_alignment=align --named_parameter_alignment=align --named_parameter_indentation=indent 
+            \--named_port_alignment=align  --named_port_indentation=indent --port_declarations_alignment=align  
+            \--port_declarations_indentation=indent --port_declarations_right_align_packed_dimensions=true 
+            \--port_declarations_right_align_unpacked_dimensions=true --struct_union_members_alignment=align %<cr>
+
 :cabbrev h vert h
 
 " 加载自定义配置
