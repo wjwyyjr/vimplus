@@ -39,7 +39,7 @@ set cursorline           " 高亮显示当前行
 set whichwrap+=<,>,h,l   " 设置光标键跨行
 set ttimeoutlen=0        " 设置<ESC>键响应时间
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
-" set cursorline
+" set signcolumn=yes       " for syntastic check
 " set cursorcolumn
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -105,9 +105,9 @@ if has("gui_running")
         " set guifont=DejaVuSansM\ Nerd\ Font\ Mono\ 10
         " set guifont=DejaVuSansM\ Nerd\ Font\ Propo\ 10
         " set guifont=DroidSansM\ Nerd\ Font\ 10
-        " set guifont=DroidSansM\ Nerd\ Font\ Mono\ 10
+        set guifont=DroidSansM\ Nerd\ Font\ Mono\ 10
         " set guifont=DroidSansM\ Nerd\ Font\ Propo\ 10
-        set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
+        " set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
         " set guifont=FiraCode\ Nerd\ Font\ Propo\ 10
         " set guifont=FiraCode\ Nerd\ Font\ Regular\ 10
         " set guifont=Hack\ Nerd\ Font\ 10
@@ -184,6 +184,7 @@ Plug 'rhysd/clever-f.vim'
 Plug 'vim-scripts/indentpython.vim'
 
 " add wangjing
+Plug 'itchyny/vim-cursorword'
 Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'skywind3000/vim-dict'
@@ -255,23 +256,23 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 
 " 主题设置
 set background=dark
-let g:onedark_termcolors=256
+let g:onedark_termcolors = 256
 colorscheme onedark
 " colorscheme gruvbox
 " colorscheme badwolf
 
 " airline
-let g:airline_theme="onedark"
-" let g:airline_theme="gruvbox"
-" let g:airline_theme="badwolf"
-let g:airline_powerline_fonts = 1
+let g:airline_theme                      = "onedark"
+" let g:airline_theme                    = "gruvbox"
+" let g:airline_theme                    = "badwolf"
+let g:airline_powerline_fonts            = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
+let g:airline_left_sep      = ''
+let g:airline_left_alt_sep  = ''
+let g:airline_right_sep     = ''
 let g:airline_right_alt_sep = ''
 
 let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -289,38 +290,38 @@ nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
 
 " auto-pairs
-let g:AutoPairsCompatibleMaps = 1
-let g:AutoPairsFlyMode = 0
-let g:AutoPairsMapBS = 1
+let g:AutoPairsCompatibleMaps     = 1
+let g:AutoPairsFlyMode            = 0
+let g:AutoPairsMapBS              = 1
 let g:AutoPairsMultilineBackspace = 1
 au FileType verilog,systemverilog let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
 
 " cpp-mode
-nnoremap <leader>y :CopyCode<cr>
-nnoremap <leader>p :PasteCode<cr>
-nnoremap <leader>U :GoToFunImpl<cr>
-nnoremap <silent> <leader>a :Switch<cr>
-nnoremap <leader><leader>fp :FormatFunParam<cr>
-nnoremap <leader><leader>if :FormatIf<cr>
+nnoremap <leader>y            :CopyCode<cr>
+nnoremap <leader>p            :PasteCode<cr>
+nnoremap <leader>U            :GoToFunImpl<cr>
+nnoremap <silent> <leader>a   :Switch<cr>
+nnoremap <leader><leader>fp   :FormatFunParam<cr>
+nnoremap <leader><leader>if   :FormatIf<cr>
 nnoremap <leader><leader>t dd :GenTryCatch<cr>
-xnoremap <leader><leader>t d :GenTryCatch<cr>
+xnoremap <leader><leader>t d  :GenTryCatch<cr>
 
 " change-colorscheme
-nnoremap <silent> <F9> :PreviousColorScheme<cr>
-inoremap <silent> <F9> <esc> :PreviousColorScheme<cr>
-nnoremap <silent> <F10> :NextColorScheme<cr>
+nnoremap <silent> <F9>        :PreviousColorScheme<cr>
+inoremap <silent> <F9> <esc>  :PreviousColorScheme<cr>
+nnoremap <silent> <F10>       :NextColorScheme<cr>
 inoremap <silent> <F10> <esc> :NextColorScheme<cr>
-nnoremap <silent> <F11> :RandomColorScheme<cr>
+nnoremap <silent> <F11>       :RandomColorScheme<cr>
 inoremap <silent> <F11> <esc> :RandomColorScheme<cr>
-nnoremap <silent> <F12> :ShowColorScheme<cr>
+nnoremap <silent> <F12>       :ShowColorScheme<cr>
 inoremap <silent> <F12> <esc> :ShowColorScheme<cr>
 
 " prepare-code
 let g:prepare_code_plugin_path = expand($HOME . "/.vim/plugged/prepare-code")
 
 " vim-buffer
-nnoremap <silent> <c-p> :PreviousBuffer<cr>
-nnoremap <silent> <c-n> :NextBuffer<cr>
+nnoremap <silent> <c-p>     :PreviousBuffer<cr>
+nnoremap <silent> <c-n>     :NextBuffer<cr>
 nnoremap <silent> <leader>d :CloseBuffer<cr>
 nnoremap <silent> <leader>D :BufOnly<cr>
 
@@ -328,7 +329,7 @@ nnoremap <silent> <leader>D :BufOnly<cr>
 nnoremap Y :CopyText<cr>
 nnoremap D :DeleteText<cr>
 nnoremap C :ChangeText<cr>
-nnoremap <leader>r :ReplaceTo<space>
+" nnoremap <leader>r :ReplaceTo<space>
 
 " nerdtree
 "nnoremap <silent> <leader>n :NERDTreeToggle<cr>
@@ -339,27 +340,27 @@ let g:NERDTreeExactMatchHighlightFullName    = 1
 let g:NERDTreePatternMatchHighlightFullName  = 1
 let g:NERDTreeHighlightFolders               = 1
 let g:NERDTreeHighlightFoldersFullName       = 1
-let g:NERDTreeDirArrowExpandable           = ''
-let g:NERDTreeDirArrowCollapsible          = ''
+let g:NERDTreeDirArrowExpandable             = ''
+let g:NERDTreeDirArrowCollapsible            = ''
 " let g:NERDTreeDirArrowExpandable           = '▷'
 " let g:NERDTreeDirArrowCollapsible          = '▼'
 let g:NERDTreeShowHidden                     = 0    " Don't show hidden files
-" let NERDTreeQuitOnOpen                       = 1    " Close NERDtree when files was opened
+" let NERDTreeQuitOnOpen                     = 1    " Close NERDtree when files was opened
 let NERDTreeMinimalUI                        = 1    " Start NERDTree in minimal UI mode (No help lines)
 " let NERDTreeChDirMode                      = 2    " Change current working directory based on root directory in NERDTree
 
 " YCM
 " 如果不指定python解释器路径，ycm会自己搜索一个合适的(与编译ycm时使用的python版本匹配)
-" let g:ycm_server_python_interpreter = '/usr/bin/python2.7'
-let g:ycm_confirm_extra_conf = 0 
-let g:ycm_error_symbol = '✗'
-let g:ycm_warning_symbol = '✹'
-let g:ycm_seed_identifiers_with_syntax = 1 
-let g:ycm_complete_in_comments = 1 
-let g:ycm_complete_in_strings = 1 
+" let g:ycm_server_python_interpreter                   = '/usr/bin/python2.7'
+let g:ycm_confirm_extra_conf                            = 0
+let g:ycm_error_symbol                                  = '✗'
+let g:ycm_warning_symbol                                = '✹'
+let g:ycm_seed_identifiers_with_syntax                  = 1
+let g:ycm_complete_in_comments                          = 1
+let g:ycm_complete_in_strings                           = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_semantic_triggers =  {
+let g:ycm_collect_identifiers_from_tags_files           = 1
+let g:ycm_semantic_triggers                             = {
             \   'c' : ['->', '.','re![_a-zA-z0-9]'],
             \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
             \             're!\[.*\]\s'],
@@ -374,10 +375,10 @@ let g:ycm_semantic_triggers =  {
             \ }
 nnoremap <leader>u :YcmCompleter GoToDeclaration<cr>
 " 已经使用cpp-mode插件提供的转到函数实现的功能
-nnoremap <leader>i :YcmCompleter GoToDefinition<cr> 
-nnoremap <leader>o :YcmCompleter GoToInclude<cr>
+nnoremap <leader>i  :YcmCompleter GoToDefinition<cr>
+nnoremap <leader>o  :YcmCompleter GoToInclude<cr>
 nnoremap <leader>ff :YcmCompleter FixIt<cr>
-nmap <F5> :YcmDiags<cr>
+nmap <F5>           :YcmDiags<cr>
 
 " tagbar
 " let g:tagbar_width = 30
@@ -391,7 +392,7 @@ map g/ <Plug>(incsearch-stay)
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-map <leader>w <Plug>(easymotion-bd-w)
+map  <leader>w <Plug>(easymotion-bd-w)
 nmap <leader>w <Plug>(easymotion-overwin-w)
 
 " nerdtree-git-plugin
@@ -420,6 +421,10 @@ let g:Lf_WindowHeight     = 0.30
 let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp         = 1
 " let g:Lf_PreviewResult  = {'Function':0, 'Colorscheme':1}
+let g:Lf_CtagsFuncOpts    = { 
+            \ 'verilog'       :'--verilog-kinds=cnpr',
+            \ 'systemverilog' :'--systemverilog-kinds=cnprCS',
+            \ }
 
 " ack
 nnoremap <leader>F :Ack!<space>
@@ -431,6 +436,7 @@ let g:echodoc_enable_at_startup = 1
 nnoremap <leader>l :Tab /\|<cr>
 nnoremap <leader>= :Tab /=<cr>
 nnoremap <leader>\ :Tab /\<cr>
+nnoremap <leader>: :Tab /:/l1c0<cr>
 " add :Tab ver for verilog
 
 " vim-smooth-scroll
@@ -449,17 +455,39 @@ xmap ga <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vip
 nmap ga <Plug>(EasyAlign) " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 
 " syntastic
-set statusline+=%#warningmsg#ervandew/supertab
+set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-" let g:syntastic_<filetype>_checkers = ['<checker-name>']
+let g:syntastic_auto_loc_list            = 1
+let g:syntastic_check_on_open            = 1
+let g:syntastic_check_on_wq              = 0
+" let g:syntastic_error_symbol             = "\u2717"
+" let g:syntastic_warning_symbol           = "\u26A0"
+let g:syntastic_error_symbol             = ">>"
+let g:syntastic_warning_symbol           = ">"
+let g:syntastic_aggregate_errors         = 1
 
-nnoremap <leader>ck      :SyntasticCheck<cr>
+let g:syntastic_verilog_checkers               = ['verilator']
+let g:syntastic_verilog_compiler_options       = '-I/home/wj/IC_Design --lint-only -Wall'
+let g:syntastic_systemverilog_checkers         = ['verilator']
+let g:syntastic_systemverilog_compiler_options = '-I/home/wj/IC_Design --lint-only -Wall'
+let g:syntastic_mode_map                       = {
+            \ "mode"              :"passive",
+            \ "active_filetypes"  :[],
+            \ "passive_filetypes" :["verilog", "systemverilog"] }
+
+nnoremap <leader>ck :SyntasticCheck<cr>
+nnoremap <leader>cq :SyntasticReset<cr>
+nnoremap ]          :lnext<cr>
+nnoremap [          :lprevious<cr>
+
+" highlight SyntasticErrorSign   guifg=red    guibg=white
+highlight SyntasticErrorSign   guifg=red    
+highlight SyntasticWarningSign guifg=yellow
+" highlight SyntasticErrorLine   guibg=#E06C75
+" highlight SyntasticWarningLine guibg=#E5C07b
 
 " bufexplorer
 nnoremap <silent> <F8> :ToggleBufExplorer<CR>
@@ -488,16 +516,26 @@ let g:UltiSnipsEditSplit             = "vertical"
 
 " nerdcommenter
 let g:NERDDefaultAlign = 'left'
-let g:NERDSpaceDelims = 1
+let g:NERDSpaceDelims  = 1
 
 " devicons
 let g:webdevicons_enable                      = 1 " loading the plugin
 let g:webdevicons_enable_nerdtree             = 1 " adding the flags to NERDTree
-let g:webdevicons_enable_airline_tabline      = 1 " adding to vim-airline's tabline
+let g:webdevicons_enable_airline_tabline      = 0 " adding to vim-airline's tabline
 let g:webdevicons_enable_airline_statusline   = 1 " adding to vim-airline's statusline
+let g:webdevicons_enable_startify             = 1 " adding to vim-startify screen
+let g:WebDevIconsUnicodeDecorateFolderNodes   = 1 " enable folder/directory glyph flag (disabled by default with 0)
+let g:WebDevIconsUnicodeDecorateFileNodes     = 1 " turn on/off file node glyph decorations (not particularly useful)
+let g:WebDevIconsUnicodeGlyphDoubleWidth      = 1 " use double-width(1) or single-width(0) glyphs
+let g:webdevicons_conceal_nerdtree_brackets   = 1 " whether or not to show the nerdtree brackets around flags
+let g:WebDevIconsNerdTreeAfterGlyphPadding    = '' " the amount of space to use after the glyph character (default ' ')
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1 " Force extra padding in NERDTree so that the filetype icons line up vertically
-let g:WebDevIconsUnicodeGlyphDoubleWidth      = 0
-let g:WebDevIconsUnicodeDecorateFolderNodes   = 1
+let g:WebDevIconsTabAirLineAfterGlyphPadding  = ' '
+let g:WebDevIconsTabAirLineBeforeGlyphPadding = ' '
+
+if exists("g:loaded_webdevicons")
+	call webdevicons#refresh()
+endif
 
 " mru
 nnoremap <F2> :MRU<cr>
@@ -507,7 +545,7 @@ nnoremap <leader>gs :Git<cr>
 nnoremap <leader>gd :Git diff % <cr>  " git diff for the current file
 
 " filelist
-au BufNewFile,BufRead *.f set ft=filelist
+au BufNewFile,BufRead *.f setlocal ft=filelist
 
 " vim-rainbow
 let g:rainbow_active = 1
@@ -547,10 +585,16 @@ let g:mkdp_command_for_global = 0
 nmap <silent> <C-M> <Plug>MarkdownPreviewToggle
 imap <silent> <C-M> <Plug>MarkdownPreviewToggle
 
+" vim-easy-replace
+let g:easy_replace_launch_key           = "<leader>r"
+let g:easy_replace_launch_in_visual_key = "<leader>r"
+
 " custom
-nnoremap <leader>ww       :set wrap!<cr>
-noremap  <space>  *N
-nnoremap <leader>v        :!verilog-format --inplace --column_limit=200 --indentation_spaces=4 --assignment_statement_alignment=align 
+nnoremap <leader>ww :setlocal wrap!<cr>
+nnoremap <leader>wc :setlocal ic!<cr>
+noremap  <space>    *N
+nnoremap <A-2>      :setlocal hls!<cr>
+nnoremap <leader>v  :!verilog-format --inplace --column_limit=200 --indentation_spaces=4 --assignment_statement_alignment=align 
             \--case_items_alignment=align --class_member_variable_alignment=align --distribution_items_alignment=align 
             \--enum_assignment_statement_alignment=align --formal_parameters_alignment=align --formal_parameters_indentation=indent 
             \--module_net_variable_alignment=align --named_parameter_alignment=align --named_parameter_indentation=indent 
