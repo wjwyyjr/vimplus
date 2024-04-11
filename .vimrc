@@ -41,6 +41,7 @@ set ttimeoutlen=0        " 设置<ESC>键响应时间
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
 " set signcolumn=yes       " for syntastic check
 " set cursorcolumn
+set termguicolors
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码缩进和排版
@@ -199,7 +200,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'yegappan/mru'
 Plug 'vim-scripts/VisIncr'
-Plug 'HonkW93/automatic-verilog'
+Plug 'wjwyyjr/automatic-verilog'
 Plug 'kqito/vim-easy-replace'
 Plug 'brooth/far.vim'
 Plug 'iamcco/mathjax-support-for-mkdp'
@@ -256,14 +257,14 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 
 " 主题设置
 set background=dark
-let g:onedark_termcolors = 256
-colorscheme onedark
-" colorscheme gruvbox
+" let g:onedark_termcolors = 256
+" colorscheme onedark
+colorscheme gruvbox
 " colorscheme badwolf
 
 " airline
-let g:airline_theme                      = "onedark"
-" let g:airline_theme                    = "gruvbox"
+" let g:airline_theme                      = "onedark"
+let g:airline_theme                    = "gruvbox"
 " let g:airline_theme                    = "badwolf"
 let g:airline_powerline_fonts            = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -437,6 +438,8 @@ nnoremap <leader>l :Tab /\|<cr>
 nnoremap <leader>= :Tab /=<cr>
 nnoremap <leader>\ :Tab /\<cr>
 nnoremap <leader>: :Tab /:/l1c0<cr>
+nnoremap <leader>' :Tab /'/l4c0<cr>
+nnoremap <leader>" :Tab /"/l4c0<cr>
 " add :Tab ver for verilog
 
 " vim-smooth-scroll
@@ -480,9 +483,8 @@ let g:syntastic_mode_map                       = {
 
 nnoremap <leader>ck :SyntasticCheck<cr>
 nnoremap <leader>cq :SyntasticReset<cr>
-nnoremap ]          :lnext<cr>
-nnoremap [          :lprevious<cr>
-
+nnoremap <A-]>      :lnext<cr>
+nnoremap <A-[>      :lprevious<cr>
 " highlight SyntasticErrorSign   guifg=red    guibg=white
 highlight SyntasticErrorSign   guifg=red    
 highlight SyntasticWarningSign guifg=yellow
@@ -563,9 +565,10 @@ let g:atv_autoinst_add_dir      = 1                        " add instance file l
 let g:atv_autopara_only_port    = 1                        " get parameter related to port
 let g:atv_autodef_mv            = 1
 let g:atv_crossdir_mode         = 1                        " 0:normal 1:filelist 2:tags
-let g:atv_crossdir_flist_browse = 1                        " find the filelist
+let g:atv_crossdir_flist_browse = 0                        " find the filelist
 let g:atv_crossdir_flist_file   = '../filelist/filelist.f'
 let g:atv_rtl_recursive         = 1                        " RtlTree recursive
+let g:atv_autodef_mv = 1
 
 nnoremap <leader>ii  :call g:AutoInst(0)<esc>
 nnoremap <leader>ip  :call g:AutoPara(0)<esc>
