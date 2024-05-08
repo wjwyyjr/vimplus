@@ -440,6 +440,7 @@ nnoremap <leader>\ :Tab /\<cr>
 nnoremap <leader>: :Tab /:/l1c0<cr>
 nnoremap <leader>' :Tab /'/l4c0<cr>
 nnoremap <leader>" :Tab /"/l4c0<cr>
+nnoremap <leader>_ :Tab /-/l1c0<cr>
 " add :Tab ver for verilog
 
 " vim-smooth-scroll
@@ -493,6 +494,7 @@ highlight SyntasticWarningSign guifg=yellow
 
 " bufexplorer
 nnoremap <silent> <F8> :ToggleBufExplorer<CR>
+" nnoremap <silent> <leader>q :ToggleBufExplorer<CR>
 
 " asyncrun
 nnoremap sh :AsyncRun -mode=term -pos=gnome 
@@ -541,6 +543,7 @@ endif
 
 " mru
 nnoremap <F2> :MRU<cr>
+" nnoremap <leader>m :MRU<cr>
 
 " fugitive
 nnoremap <leader>gs :Git<cr>
@@ -587,7 +590,6 @@ let g:mkdp_command_for_global = 0
 
 nmap <silent> <C-M> <Plug>MarkdownPreviewToggle
 imap <silent> <C-M> <Plug>MarkdownPreviewToggle
-
 " vim-easy-replace
 let g:easy_replace_launch_key           = "<leader>r"
 let g:easy_replace_launch_in_visual_key = "<leader>r"
@@ -603,7 +605,8 @@ nnoremap <leader>v  :!verilog-format --inplace --column_limit=200 --indentation_
             \--module_net_variable_alignment=align --named_parameter_alignment=align --named_parameter_indentation=indent 
             \--named_port_alignment=align  --named_port_indentation=indent --port_declarations_alignment=align  
             \--port_declarations_indentation=indent --port_declarations_right_align_packed_dimensions=true 
-            \--port_declarations_right_align_unpacked_dimensions=true --struct_union_members_alignment=align %<cr>
+            \--port_declarations_right_align_unpacked_dimensions=true --struct_union_members_alignment=align 
+            \--wrap_end_else_clauses=true %<cr>
 
 :cabbrev h vert h
 
