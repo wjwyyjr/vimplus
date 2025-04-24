@@ -4,8 +4,7 @@
 "  .    8: %.;t;S;%@88:X.8X8%;8S t@@%   .  %@@t  .X88X .      .       .   %@@@@@@@@@X:  .     .       .       .       .  
 "    ..X.;X%8t8%8ttX.88;8.8%:;% ;8:SX%.   SX.8S.  St88:  .  .   .  .    ..XS.@%SSS88S@:. X@@%  . . .    .  .    .  ......
 "   . X;:;8SS888;8tt;8:8:8; t:t8S 8:Xt.  :8888: .%888:.  .SSSSSSSSSSS%:  .S888t   @@8X: .%.88  .SSt  .:SS;  .%SSSSSSSS%. 
-"    :t8 :;X8S;8.8S;8S.8.t8:%8XS.. S8.8:.S8;8;  :@;@88 . S:88 X.88@88:@t..%S.  .. X;8@: :%:;8. X%:X;. 8;.;  %S8@XXSXSS8..
-"  .t88; X;8S8888;8S8t 8S88SSStt:. @.%8St;@8X  . t .8S   S:88:%888%;8t8:..S.S@%SSS8S88t .% @;  X:.X.  88t :.t@t8@ .......
+"    :t8 :;X8S;8.8S;8S.8.t8:%8XS.. S8.8:.S8;8;  :@;@88 . S:88 X.88@88:@t..%S.  .. X;8@: :%:;8. X%:X;. 8;.;  %S8@XXSXSS8..  "  .t88; X;8S8888;8S8t 8S88SSStt:. @.%8St;@8X  . t .8S   S:88:%888%;8t8:..S.S@%SSS8S88t .% @;  X:.X.  88t :.t@t8@ .......
 "  8; :888XSStS;88;88X%;;tt::;;8@ ..%X88:88Xt    .S@.::. S@8% X8.@;S888X .%;88SSSS.SX.:. 8S88: @;88t. 8.S8  t;@8@88@88S..
 "  S. :tX: ;%8S8 : .::. %8t  %S 8.  @88t8 8t.  . . .@8;  8888 @@%S;t8.8S .:SX8; .:.... . S8; ..8888:..8:8@: ;St@@888.@@..
 "    :8:;888888 .; .     8%8@       .8X.@8X  .    X%8@  .t@8S X88X:%888X .@8@8t  ..  .   SX%X .X;;S@%tS8; ;..SttSXS8888S.
@@ -42,24 +41,25 @@ set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后�
 " set signcolumn=yes       " for syntastic check
 " set cursorcolumn
 set termguicolors
+set autochdir
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码缩进和排版
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set autoindent           " 设置自动缩进
-set cindent              " 设置使用C/C++语言的自动缩进方式
-set cinoptions=g0,:0,N-s,(0    " 设置C/C++语言的具体缩进方式
-set smartindent          " 智能的选择对其方式
-filetype indent on       " 自适应不同语言的智能缩进
-set expandtab            " 将制表符扩展为空格
-set tabstop=4            " 设置编辑时制表符占用空格数
-set shiftwidth=4         " 设置格式化时制表符占用空格数
-set softtabstop=4        " 设置4个空格为制表符
-set smarttab             " 在行和段开始处使用制表符
-set nowrap               " 禁止折行
-set backspace=2          " 使用回车键正常处理indent,eol,start等
-set sidescroll=10        " 设置向右滚动字符数
-set nofoldenable         " 禁用折叠代码
+set autoindent                 "设置自动缩进
+set cindent                    "设置使用C/C++语言的自动缩进方式
+set cinoptions=g0,:0,N-s,(0    "设置C/C++语言的具体缩进方式
+set smartindent                "智能的选择对其方式
+filetype indent on             "自适应不同语言的智能缩进
+set expandtab                  "将制表符扩展为空格
+set tabstop=4                  "设置编辑时制表符占用空格数
+set shiftwidth=4               "设置格式化时制表符占用空格数
+set softtabstop=4              "设置4个空格为制表符
+set smarttab                   "在行和段开始处使用制表符
+set nowrap                     "禁止折行
+set backspace=2                "使用回车键正常处理indent,eol,start等
+set sidescroll=10              "设置向右滚动字符数
+set nofoldenable               "禁用折叠代码
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码补全
@@ -103,17 +103,19 @@ if has("gui_running")
     else
         " set guifont=DroidSansMono\ Nerd\ Font\ Regular\ 18
         " set guifont=DejaVuSansM\ Nerd\ Font\ 10
-        " set guifont=DejaVuSansM\ Nerd\ Font\ Mono\ 10
+        " set guifont=DejaVuSansM\ Nerd\ Font\ Mono\ 11
         " set guifont=DejaVuSansM\ Nerd\ Font\ Propo\ 10
         " set guifont=DroidSansM\ Nerd\ Font\ 10
-        set guifont=DroidSansM\ Nerd\ Font\ Mono\ 10
+        " set guifont=DroidSansM\ Nerd\ Font\ Mono\ 11
         " set guifont=DroidSansM\ Nerd\ Font\ Propo\ 10
         " set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
         " set guifont=FiraCode\ Nerd\ Font\ Propo\ 10
         " set guifont=FiraCode\ Nerd\ Font\ Regular\ 10
         " set guifont=Hack\ Nerd\ Font\ 10
-        " set guifont=Hack\ Nerd\ Font\ Mono\ 10
+        " set guifont=Hack\ Nerd\ Font\ Mono\ 11
         " set guifont=Hack\ Nerd\ Font\ Propo\ 10
+        " set guifont=Agave\ Nerd\ Font\ Mono\ Regular\ 13
+        set guifont=AnonymicePro\ Nerd\ Font\ Mono\ 13
     endif
     set guioptions-=m           " 隐藏菜单栏
     set guioptions-=T           " 隐藏工具栏
@@ -123,8 +125,8 @@ if has("gui_running")
     set showtabline=0           " 隐藏Tab栏
     "set guicursor=n-v-c:ver5   " 设置光标为竖线
     set guicursor=a:block
-    winpos 100 100              " 设置初始界面位置
-    set lines=45 columns=150    " 设置初始界面大小
+    winpos 1919 41              " 设置初始界面位置
+    set lines=68 columns=136    " 设置初始界面大小
     " for plug
     let g:interestingWordsGUIColors = ['#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF']
 endif
@@ -147,6 +149,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'chxuan/cpp-mode'
 Plug 'chxuan/vim-edit'
 Plug 'chxuan/change-colorscheme'
+Plug 'rafi/awesome-vim-colorschemes'
 Plug 'chxuan/prepare-code'
 Plug 'chxuan/vim-buffer'
 Plug 'chxuan/vimplus-startify'
@@ -154,7 +157,7 @@ Plug 'chxuan/vimplus-startify'
 Plug 'ervandew/supertab' " add for ultisnipet
 Plug 'Valloric/YouCompleteMe'
 Plug 'Yggdroot/LeaderF'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
 Plug 'LunarWatcher/auto-pairs'
@@ -198,13 +201,16 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'yegappan/mru'
+" Plug 'yegappan/mru'
 Plug 'vim-scripts/VisIncr'
 Plug 'wjwyyjr/automatic-verilog'
 Plug 'kqito/vim-easy-replace'
 Plug 'brooth/far.vim'
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'sainnhe/everforest'
+Plug 'sheerun/vim-polyglot'
+Plug 'dense-analysis/ale'
 
 " test
 Plug '~/.vim/plugged/potion'
@@ -222,23 +228,23 @@ call plug#end()
 runtime macros/matchit.vim
 
 " 编辑vimrc相关配置文件
-nnoremap <leader>e  :edit $MYVIMRC<cr>
-nnoremap <leader>vc :edit ~/.vimrc.custom.config<cr>
-nnoremap <leader>vp :edit ~/.vimrc.custom.plugins<cr>
+nnoremap <leader>e  :edit $MYVIMRC<CR>
+nnoremap <leader>vc :edit ~/.vimrc.custom.config<CR>
+nnoremap <leader>vp :edit ~/.vimrc.custom.plugins<CR>
 
 " 查看vimplus的help文件
-nnoremap <leader>h :view +let\ &l:modifiable=0 ~/vimplus/help.md<cr>
+nnoremap <leader>h :view +let\ &l:modifiable=0 ~/vimplus/help.md<CR>
 
 " 打开当前光标所在单词的vim帮助文档
-nnoremap <leader>H :execute ":help " . expand("<cword>")<cr>
+nnoremap <leader>H :execute ":help " . expand("<cword>")<CR>
 
 " 重新加载vimrc文件
-nnoremap <leader>s :source $MYVIMRC<cr>
+nnoremap <leader>s :source $MYVIMRC<CR>
 
 " 安装、更新、删除插件
-nnoremap <leader><leader>i :PlugInstall<cr>
-nnoremap <leader><leader>u :PlugUpdate<cr>
-nnoremap <leader><leader>c :PlugClean<cr>
+nnoremap <leader><leader>i :PlugInstall<CR>
+nnoremap <leader><leader>u :PlugUpdate<CR>
+nnoremap <leader><leader>c :PlugClean<CR>
 
 " 分屏窗口移动
 nnoremap <c-j> <c-w>j
@@ -259,12 +265,16 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 set background=dark
 " let g:onedark_termcolors = 256
 " colorscheme onedark
-colorscheme gruvbox
+" colorscheme gruvbox
 " colorscheme badwolf
+" colorscheme OceanicNext
+" colorscheme happy_hacking
+" colorscheme default
+colorscheme everforest
 
 " airline
 " let g:airline_theme                      = "onedark"
-let g:airline_theme                    = "gruvbox"
+" let g:airline_theme                    = "gruvbox"
 " let g:airline_theme                    = "badwolf"
 let g:airline_powerline_fonts            = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -298,43 +308,43 @@ let g:AutoPairsMultilineBackspace = 1
 au FileType verilog,systemverilog let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
 
 " cpp-mode
-nnoremap <leader>y            :CopyCode<cr>
-nnoremap <leader>p            :PasteCode<cr>
-nnoremap <leader>U            :GoToFunImpl<cr>
-nnoremap <silent> <leader>a   :Switch<cr>
-nnoremap <leader><leader>fp   :FormatFunParam<cr>
-nnoremap <leader><leader>if   :FormatIf<cr>
-nnoremap <leader><leader>t dd :GenTryCatch<cr>
-xnoremap <leader><leader>t d  :GenTryCatch<cr>
+nnoremap <leader>y            :CopyCode<CR>
+nnoremap <leader>p            :PasteCode<CR>
+nnoremap <leader>U            :GoToFunImpl<CR>
+nnoremap <silent> <leader>a   :Switch<CR>
+nnoremap <leader><leader>fp   :FormatFunParam<CR>
+nnoremap <leader><leader>if   :FormatIf<CR>
+nnoremap <leader><leader>t dd :GenTryCatch<CR>
+xnoremap <leader><leader>t d  :GenTryCatch<CR>
 
 " change-colorscheme
-nnoremap <silent> <F9>        :PreviousColorScheme<cr>
-inoremap <silent> <F9> <esc>  :PreviousColorScheme<cr>
-nnoremap <silent> <F10>       :NextColorScheme<cr>
-inoremap <silent> <F10> <esc> :NextColorScheme<cr>
-nnoremap <silent> <F11>       :RandomColorScheme<cr>
-inoremap <silent> <F11> <esc> :RandomColorScheme<cr>
-nnoremap <silent> <F12>       :ShowColorScheme<cr>
-inoremap <silent> <F12> <esc> :ShowColorScheme<cr>
+nnoremap <silent> <F9>        :PreviousColorScheme<CR>
+inoremap <silent> <F9> <esc>  :PreviousColorScheme<CR>
+nnoremap <silent> <F10>       :NextColorScheme<CR>
+inoremap <silent> <F10> <esc> :NextColorScheme<CR>
+nnoremap <silent> <F11>       :RandomColorScheme<CR>
+inoremap <silent> <F11> <esc> :RandomColorScheme<CR>
+nnoremap <silent> <F12>       :ShowColorScheme<CR>
+inoremap <silent> <F12> <esc> :ShowColorScheme<CR>
 
 " prepare-code
 let g:prepare_code_plugin_path = expand($HOME . "/.vim/plugged/prepare-code")
 
 " vim-buffer
-nnoremap <silent> <c-p>     :PreviousBuffer<cr>
-nnoremap <silent> <c-n>     :NextBuffer<cr>
-nnoremap <silent> <leader>d :CloseBuffer<cr>
-nnoremap <silent> <leader>D :BufOnly<cr>
+nnoremap <silent> <c-p>     :PreviousBuffer<CR>
+nnoremap <silent> <c-n>     :NextBuffer<CR>
+nnoremap <silent> <leader>d :CloseBuffer<CR>
+nnoremap <silent> <leader>D :BufOnly<CR>
 
 " vim-edit
-nnoremap Y :CopyText<cr>
-nnoremap D :DeleteText<cr>
-nnoremap C :ChangeText<cr>
+nnoremap Y :CopyText<CR>
+nnoremap D :DeleteText<CR>
+nnoremap C :ChangeText<CR>
 " nnoremap <leader>r :ReplaceTo<space>
 
 " nerdtree
-"nnoremap <silent> <leader>n :NERDTreeToggle<cr>
-nnoremap <silent> wm :NERDTreeToggle<cr>
+"nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+nnoremap <silent> wm :NERDTreeToggle .<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName    = 1
@@ -348,7 +358,18 @@ let g:NERDTreeDirArrowCollapsible            = ''
 let g:NERDTreeShowHidden                     = 0    " Don't show hidden files
 " let NERDTreeQuitOnOpen                     = 1    " Close NERDtree when files was opened
 let NERDTreeMinimalUI                        = 1    " Start NERDTree in minimal UI mode (No help lines)
-" let NERDTreeChDirMode                      = 2    " Change current working directory based on root directory in NERDTree
+let NERDTreeChDirMode                        = 2    " Change current working directory based on root directory in NERDTree
+
+function! UpdateNERDTree()
+    if expand('%:p') != '' && filereadable(expand('%:p')) " 检查是否为有效文件
+        if exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1 " 检查 NERDTree 窗口是否存在
+            NERDTreeFind
+            wincmd p " 返回原窗口
+        endif
+    endif
+endfunction
+
+autocmd BufEnter * call UpdateNERDTree()
 
 " YCM
 " 如果不指定python解释器路径，ycm会自己搜索一个合适的(与编译ycm时使用的python版本匹配)
@@ -374,16 +395,16 @@ let g:ycm_semantic_triggers                             = {
             \   'lua' : ['.', ':'],
             \   'erlang' : [':'],
             \ }
-nnoremap <leader>u :YcmCompleter GoToDeclaration<cr>
+nnoremap <leader>u :YcmCompleter GoToDeclaration<CR>
 " 已经使用cpp-mode插件提供的转到函数实现的功能
-nnoremap <leader>i  :YcmCompleter GoToDefinition<cr>
-nnoremap <leader>o  :YcmCompleter GoToInclude<cr>
-nnoremap <leader>ff :YcmCompleter FixIt<cr>
-nmap <F5>           :YcmDiags<cr>
+nnoremap <leader>i  :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>o  :YcmCompleter GoToInclude<CR>
+nnoremap <leader>ff :YcmCompleter FixIt<CR>
+nmap <F5>           :YcmDiags<CR>
 
 " tagbar
 " let g:tagbar_width = 30
-" nnoremap <silent> <leader>t :TagbarToggle<cr>
+" nnoremap <silent> <leader>t :TagbarToggle<CR>
 set tags+=../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
 
 " incsearch.vim
@@ -411,9 +432,10 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
             \ }
 
 " LeaderF
-nnoremap <leader>f :LeaderfFunction!<cr>
-let g:Lf_ShortcutF        = "<tab>"
-let g:Lf_WildIgnore       = {
+let g:Lf_ShortcutF            = "<tab>"
+let g:Lf_WorkingDirectoryMode = 'AF'
+let g:Lf_RootMarkers          = ['.git', '.svn', '.hg', '.project', '.root', 'rtl', 'scr']
+let g:Lf_WildIgnore           = {
             \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh'],
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
             \}
@@ -427,20 +449,55 @@ let g:Lf_CtagsFuncOpts    = {
             \ 'systemverilog' :'--systemverilog-kinds=cnprCS',
             \ }
 
+noremap <leader>f :LeaderfSelf<CR>
+noremap <leader>fm :LeaderfMru<CR>
+noremap <leader>ff :LeaderfFunction<CR>
+noremap <leader>fb :LeaderfBufTagAll<CR>
+noremap <leader>ft :LeaderfBufTag<CR>
+noremap <leader>fl :LeaderfLine<CR>
+noremap <leader>fw :LeaderfWindow<CR>
+
+nmap <leader>fr  <Plug>LeaderfRgPrompt
+nmap <leader>fra <Plug>LeaderfRgCwordLiteralNoBoundary
+nmap <leader>frb <Plug>LeaderfRgCwordLiteralBoundary
+nmap <leader>frc <Plug>LeaderfRgCwordRegexNoBoundary
+nmap <leader>frd <Plug>LeaderfRgCwordRegexBoundary
+
+vmap <leader>fra <Plug>LeaderfRgVisualLiteralNoBoundary
+vmap <leader>frb <Plug>LeaderfRgVisualLiteralBoundary
+vmap <leader>frc <Plug>LeaderfRgVisualRegexNoBoundary
+vmap <leader>frd <Plug>LeaderfRgVisualRegexBoundary
+
+
 " ack
-nnoremap <leader>F :Ack!<space>
+" nnoremap <leader>F :Ack!<space>
 
 " echodoc.vim
 let g:echodoc_enable_at_startup = 1
 
 " tabular
-nnoremap <leader>l :Tab /\|<cr>
-nnoremap <leader>= :Tab /=<cr>
-nnoremap <leader>\ :Tab /\<cr>
-nnoremap <leader>: :Tab /:/l1c0<cr>
-nnoremap <leader>' :Tab /'/l4c0<cr>
-nnoremap <leader>" :Tab /"/l4c0<cr>
-nnoremap <leader>_ :Tab /-/l1c0<cr>
+nnoremap <leader>l       :Tab /\|<CR>
+nnoremap <leader>=       :Tab /=<CR>
+nnoremap <leader>\       :Tab /\<CR>
+nnoremap <leader>:       :Tab /:/l1c0<CR>
+nnoremap <leader>;       :Tab /;/l1c0<CR>
+nnoremap <leader>'       :Tab /'/l4c0<CR>
+nnoremap <leader>"       :Tab /"/l4c0<CR>
+nnoremap <leader>_       :Tab /-/l1c0<CR>
+nnoremap <leader>''      :Tab /'$/l1c0<CR>
+nnoremap <leader><space> :Tab spaces<CR>
+
+vnoremap <leader>l       :Tab /\|<CR>
+vnoremap <leader>=       :Tab /=<CR>
+vnoremap <leader>\       :Tab /\<CR>
+vnoremap <leader>:       :Tab /:/l1c0<CR>
+vnoremap <leader>;       :Tab /;/l1c0<CR>
+vnoremap <leader>'       :Tab /'/l4c0<CR>
+vnoremap <leader>"       :Tab /"/l4c0<CR>
+vnoremap <leader>_       :Tab /-/l1c0<CR>
+vnoremap <leader>''      :Tab /'$/l1c0<CR>
+vnoremap <leader><space> :Tab spaces<CR>
+
 " add :Tab ver for verilog
 
 " vim-smooth-scroll
@@ -450,9 +507,9 @@ noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " gv
-nnoremap <leader>g  :GV<cr>
-nnoremap <leader>G  :GV!<cr>
-nnoremap <leader>gg :GV?<cr>
+nnoremap <leader>g  :GV<CR>
+nnoremap <leader>G  :GV!<CR>
+nnoremap <leader>gg :GV?<CR>
 
 " easy-align
 xmap ga <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -467,8 +524,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list            = 1
 let g:syntastic_check_on_open            = 1
 let g:syntastic_check_on_wq              = 0
-" let g:syntastic_error_symbol             = "\u2717"
-" let g:syntastic_warning_symbol           = "\u26A0"
 let g:syntastic_error_symbol             = ">>"
 let g:syntastic_warning_symbol           = ">"
 let g:syntastic_aggregate_errors         = 1
@@ -482,15 +537,24 @@ let g:syntastic_mode_map                       = {
             \ "active_filetypes"  :[],
             \ "passive_filetypes" :["verilog", "systemverilog"] }
 
-nnoremap <leader>ck :SyntasticCheck<cr>
-nnoremap <leader>cq :SyntasticReset<cr>
-nnoremap <A-]>      :lnext<cr>
-nnoremap <A-[>      :lprevious<cr>
+nnoremap <leader>ck :SyntasticCheck<CR>
+nnoremap <leader>cq :SyntasticReset<CR>
+nnoremap <A-]>      :lnext<CR>
+nnoremap <A-[>      :lprevious<CR>
 " highlight SyntasticErrorSign   guifg=red    guibg=white
 highlight SyntasticErrorSign   guifg=red    
 highlight SyntasticWarningSign guifg=yellow
 " highlight SyntasticErrorLine   guibg=#E06C75
 " highlight SyntasticWarningLine guibg=#E5C07b
+
+" ale
+let b:ale_linters = ['verilator']
+let g:ale_sign_error = ''
+let g:ale_sign_warning = ''
+let g:airline#extensions#ale#enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 " bufexplorer
 nnoremap <silent> <F8> :ToggleBufExplorer<CR>
@@ -514,8 +578,7 @@ let g:SuperTabDefaultCompletionType    = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger         = "<tab>"
-" let g:UltiSnipsJumpForwardTrigger  = "<tab>"
-" let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" let g:UltiSnipsJumpForwardTrigger  = "<tab>" let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsEditSplit             = "vertical"
 
 " nerdcommenter
@@ -542,19 +605,19 @@ if exists("g:loaded_webdevicons")
 endif
 
 " mru
-nnoremap <F2> :MRU<cr>
-" nnoremap <leader>m :MRU<cr>
+" nnoremap <F2> :MRU<CR>
+" nnoremap <leader>m :MRU<CR>
 
 " fugitive
-nnoremap <leader>gs :Git<cr>
-nnoremap <leader>gd :Git diff % <cr>  " git diff for the current file
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gd :Git diff % <CR>  " git diff for the current file
 
 " filelist
 au BufNewFile,BufRead *.f setlocal ft=filelist
 
 " vim-rainbow
 let g:rainbow_active = 1
-nnoremap <A-1> :RainbowToggle<cr>
+nnoremap <A-1> :RainbowToggle<CR>
 
 " automatic-verilog
 let g:atv_snippet_att_en        = 1                        " auto load the template
@@ -567,7 +630,7 @@ let g:atv_snippet_website       = ''
 let g:atv_autoinst_add_dir      = 1                        " add instance file location
 let g:atv_autopara_only_port    = 1                        " get parameter related to port
 let g:atv_autodef_mv            = 1
-let g:atv_crossdir_mode         = 1                        " 0:normal 1:filelist 2:tags
+" let g:atv_crossdir_mode         = 1                        " 0:normal 1:filelist 2:tags
 let g:atv_crossdir_flist_browse = 0                        " find the filelist
 let g:atv_crossdir_flist_file   = '../filelist/filelist.f'
 let g:atv_rtl_recursive         = 1                        " RtlTree recursive
@@ -579,7 +642,14 @@ nnoremap <leader>ipv :call g:AutoParaValue(0)<esc>
 nnoremap <leader>ir  :call g:AutoReg()<esc>
 nnoremap <leader>iw  :call g:AutoWire()<esc>
 nnoremap <leader>id  :call g:AutoDef()<esc>
-nnoremap <leader>it  :RtlTree<cr>
+nnoremap <leader>it  :RtlTree<CR>
+nnoremap <leader>if  :call AddVerilogFileDir()<CR>
+
+function! AddVerilogFileDir()
+    call append(line(".") + 0, '//Local Variables:' )
+    call append(line(".") + 1, '//verilog-library-directories:(".")' )
+    call append(line(".") + 2, '//verilog-library-directories-recursive:0' )
+endfunction
 
 " markdown-preview
 let g:mkdp_auto_start         = 1
@@ -595,10 +665,10 @@ let g:easy_replace_launch_key           = "<leader>r"
 let g:easy_replace_launch_in_visual_key = "<leader>r"
 
 " custom
-nnoremap <leader>ww :setlocal wrap!<cr>
-nnoremap <leader>wc :setlocal ic!<cr>
+nnoremap <leader>ww :setlocal wrap!<CR>
+nnoremap <leader>wc :setlocal ic!<CR>
 noremap  <space>    *N
-nnoremap <A-2>      :setlocal hls!<cr>
+nnoremap <A-2>      :setlocal hls!<CR>
 nnoremap <leader>v  :!verilog-format --inplace --column_limit=200 --indentation_spaces=4 --assignment_statement_alignment=align 
             \--case_items_alignment=align --class_member_variable_alignment=align --distribution_items_alignment=align 
             \--enum_assignment_statement_alignment=align --formal_parameters_alignment=align --formal_parameters_indentation=indent 
@@ -606,9 +676,20 @@ nnoremap <leader>v  :!verilog-format --inplace --column_limit=200 --indentation_
             \--named_port_alignment=align  --named_port_indentation=indent --port_declarations_alignment=align  
             \--port_declarations_indentation=indent --port_declarations_right_align_packed_dimensions=true 
             \--port_declarations_right_align_unpacked_dimensions=true --struct_union_members_alignment=align 
-            \--wrap_end_else_clauses=true %<cr>
+            \--wrap_end_else_clauses=true %<CR>
 
 :cabbrev h vert h
+
+nnoremap <F2> gg=G<C-o><C-o>
+
+vnoremap // y/<c-r>"<cr>
+
+nnoremap <leader>im  :call AddVerilogComment()<CR>
+function! AddVerilogComment()
+    call append(line(".") + 1, '//---------------------------------------------------------------------------------------------' )
+endfunction
+
+au BufEnter,BufRead *.lib setlocal ft=
 
 " 加载自定义配置
 if filereadable(expand($HOME . '/.vimrc.custom.config'))
