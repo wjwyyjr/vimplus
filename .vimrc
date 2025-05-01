@@ -101,21 +101,13 @@ if has("gui_running")
     if system == "Darwin\n"
         set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ Complete:h18 " 设置字体
     else
-        " set guifont=DroidSansMono\ Nerd\ Font\ Regular\ 18
         " set guifont=DejaVuSansM\ Nerd\ Font\ 10
-        " set guifont=DejaVuSansM\ Nerd\ Font\ Mono\ 11
-        " set guifont=DejaVuSansM\ Nerd\ Font\ Propo\ 10
         " set guifont=DroidSansM\ Nerd\ Font\ 10
-        " set guifont=DroidSansM\ Nerd\ Font\ Mono\ 11
-        " set guifont=DroidSansM\ Nerd\ Font\ Propo\ 10
         " set guifont=FiraCode\ Nerd\ Font\ Mono\ 10
-        " set guifont=FiraCode\ Nerd\ Font\ Propo\ 10
-        " set guifont=FiraCode\ Nerd\ Font\ Regular\ 10
         " set guifont=Hack\ Nerd\ Font\ 10
-        " set guifont=Hack\ Nerd\ Font\ Mono\ 11
-        " set guifont=Hack\ Nerd\ Font\ Propo\ 10
         " set guifont=Agave\ Nerd\ Font\ Mono\ Regular\ 13
-        set guifont=AnonymicePro\ Nerd\ Font\ Mono\ 13
+        " set guifont=AnonymicePro\ Nerd\ Font\ Mono\ 13
+        set guifont=RecMonoSmCasual\ Nerd\ Font\ Mono\ 12
     endif
     set guioptions-=m           " 隐藏菜单栏
     set guioptions-=T           " 隐藏工具栏
