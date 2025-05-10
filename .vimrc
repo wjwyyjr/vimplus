@@ -145,11 +145,9 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'chxuan/prepare-code'
 Plug 'chxuan/vim-buffer'
 Plug 'chxuan/vimplus-startify'
-" Plug 'preservim/tagbar'
 Plug 'ervandew/supertab' " add for ultisnipet
 Plug 'Valloric/YouCompleteMe'
 Plug 'Yggdroot/LeaderF'
-" Plug 'mileszs/ack.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
 Plug 'LunarWatcher/auto-pairs'
@@ -159,7 +157,6 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-" Plug 'tpope/vim-commentary'
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-endwise'
@@ -181,11 +178,10 @@ Plug 'vim-scripts/indentpython.vim'
 
 " add wangjing
 Plug 'itchyny/vim-cursorword'
-Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'skywind3000/vim-dict'
 Plug 'vim-syntastic/syntastic'
-Plug 'wjwyyjr/verilog_systemverilog.vim'
+Plug 'wjwyyjr/verilog_systemverilog.vim', { 'for' : ['verilog', 'systemverilog'] }
 Plug 'lfv89/vim-interestingwords'
 " rainbow confilct with auto-pairs, maybe resolve later
 " Plug 'frazrepo/vim-rainbow'
@@ -193,7 +189,6 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-" Plug 'yegappan/mru'
 Plug 'vim-scripts/VisIncr'
 Plug 'wjwyyjr/automatic-verilog'
 Plug 'kqito/vim-easy-replace'
@@ -203,9 +198,11 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'sainnhe/everforest'
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
+Plug 'Vim-Geek/largefile.vim'
+Plug 'kingmilian/AuthorInfo'
 
-" test
-Plug '~/.vim/plugged/potion'
+" my own
+Plug 'wjwyyjr/wj-vim-settings'
 
 " 加载自定义插件
 if filereadable(expand($HOME . '/.vimrc.custom.plugins'))
@@ -265,7 +262,7 @@ set background=dark
 colorscheme everforest
 
 " airline
-" let g:airline_theme                      = "onedark"
+" let g:airline_theme                    = "onedark"
 " let g:airline_theme                    = "gruvbox"
 " let g:airline_theme                    = "badwolf"
 let g:airline_powerline_fonts            = 1
@@ -297,7 +294,6 @@ let g:AutoPairsCompatibleMaps     = 1
 let g:AutoPairsFlyMode            = 0
 let g:AutoPairsMapBS              = 1
 let g:AutoPairsMultilineBackspace = 1
-au FileType verilog,systemverilog let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
 
 " cpp-mode
 nnoremap <leader>y            :CopyCode<CR>
@@ -394,9 +390,6 @@ nnoremap <leader>o  :YcmCompleter GoToInclude<CR>
 nnoremap <leader>ff :YcmCompleter FixIt<CR>
 nmap <F5>           :YcmDiags<CR>
 
-" tagbar
-" let g:tagbar_width = 30
-" nnoremap <silent> <leader>t :TagbarToggle<CR>
 set tags+=../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
 
 " incsearch.vim
@@ -411,15 +404,15 @@ nmap <leader>w <Plug>(easymotion-overwin-w)
 
 " nerdtree-git-plugin
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-            \ "Modified"  : "✹",
-            \ "Staged"    : "✚",
+            \ "Modified"  : "M",
+            \ "Staged"    : "A",
             \ "Untracked" : "✭",
-            \ "Renamed"   : "➜",
-            \ "Unmerged"  : "═",
-            \ "Deleted"   : "✖",
+            \ "Renamed"   : "R",
+            \ "Unmerged"  : "U",
+            \ "Deleted"   : "D",
             \ "Dirty"     : "✗",
             \ "Clean"     : "✔︎",
-            \ 'Ignored'   : '☒',
+            \ 'Ignored'   : 'I',
             \ "Unknown"   : "?"
             \ }
 
@@ -460,10 +453,6 @@ vmap <leader>frb <Plug>LeaderfRgVisualLiteralBoundary
 vmap <leader>frc <Plug>LeaderfRgVisualRegexNoBoundary
 vmap <leader>frd <Plug>LeaderfRgVisualRegexBoundary
 
-
-" ack
-" nnoremap <leader>F :Ack!<space>
-
 " echodoc.vim
 let g:echodoc_enable_at_startup = 1
 
@@ -502,10 +491,6 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 nnoremap <leader>g  :GV<CR>
 nnoremap <leader>G  :GV!<CR>
 nnoremap <leader>gg :GV?<CR>
-
-" easy-align
-xmap ga <Plug>(EasyAlign) " Start interactive EasyAlign in visual mode (e.g. vipga)
-nmap ga <Plug>(EasyAlign) " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 
 " syntastic
 set statusline+=%#warningmsg#
@@ -555,13 +540,6 @@ nnoremap <silent> <F8> :ToggleBufExplorer<CR>
 " asyncrun
 nnoremap sh :AsyncRun -mode=term -pos=gnome 
 
-" verilog_systemverilog
-nnoremap <leader>u :VerilogGotoInstanceStart<CR>
-nnoremap <leader>i :VerilogFollowInstance<CR>
-nnoremap <leader>o :VerilogReturnInstance<CR>
-nnoremap <leader>I :VerilogFollowPort<CR>
-" nnoremap <leader>v :VerilogFormat<CR>  
-
 " ultisnipet
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
@@ -596,16 +574,9 @@ if exists("g:loaded_webdevicons")
 	call webdevicons#refresh()
 endif
 
-" mru
-" nnoremap <F2> :MRU<CR>
-" nnoremap <leader>m :MRU<CR>
-
 " fugitive
 nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gd :Git diff % <CR>  " git diff for the current file
-
-" filelist
-au BufNewFile,BufRead *.f setlocal ft=filelist
 
 " vim-rainbow
 let g:rainbow_active = 1
@@ -635,40 +606,36 @@ nnoremap <leader>ir  :call g:AutoReg()<esc>
 nnoremap <leader>iw  :call g:AutoWire()<esc>
 nnoremap <leader>id  :call g:AutoDef()<esc>
 nnoremap <leader>it  :RtlTree<CR>
-nnoremap <leader>if  :call AddVerilogFileDir()<CR>
-
-function! AddVerilogFileDir()
-    call append(line(".") + 0, '//Local Variables:' )
-    call append(line(".") + 1, '//verilog-library-directories:(".")' )
-    call append(line(".") + 2, '//verilog-library-directories-recursive:0' )
-endfunction
 
 " markdown-preview
 let g:mkdp_auto_start         = 1
-let g:mkdp_auto_open          = 1
+let g:mkdp_auto_open          = 0
 let g:mkdp_auto_close         = 1
 let g:mkdp_refresh_slow       = 0
 let g:mkdp_command_for_global = 0
 
 nmap <silent> <C-M> <Plug>MarkdownPreviewToggle
 imap <silent> <C-M> <Plug>MarkdownPreviewToggle
+
 " vim-easy-replace
 let g:easy_replace_launch_key           = "<leader>r"
 let g:easy_replace_launch_in_visual_key = "<leader>r"
+
+" largefile
+let g:LargeFile = 1
+
+" AuthorInfo
+let g:vimrc_author='Bruce Wang'
+let g:vimrc_email='wjwyyjr@gmail.com'
+" let g:vimrc_homepage='http://www.vimer.cn'
+
+nnoremap <F7> :AuthorInfoDetect<cr>
 
 " custom
 nnoremap <leader>ww :setlocal wrap!<CR>
 nnoremap <leader>wc :setlocal ic!<CR>
 noremap  <space>    *N
 nnoremap <A-2>      :setlocal hls!<CR>
-nnoremap <leader>v  :!verilog-format --inplace --column_limit=200 --indentation_spaces=4 --assignment_statement_alignment=align 
-            \--case_items_alignment=align --class_member_variable_alignment=align --distribution_items_alignment=align 
-            \--enum_assignment_statement_alignment=align --formal_parameters_alignment=align --formal_parameters_indentation=indent 
-            \--module_net_variable_alignment=align --named_parameter_alignment=align --named_parameter_indentation=indent 
-            \--named_port_alignment=align  --named_port_indentation=indent --port_declarations_alignment=align  
-            \--port_declarations_indentation=indent --port_declarations_right_align_packed_dimensions=true 
-            \--port_declarations_right_align_unpacked_dimensions=true --struct_union_members_alignment=align 
-            \--wrap_end_else_clauses=true %<CR>
 
 :cabbrev h vert h
 
@@ -676,10 +643,7 @@ nnoremap <F2> gg=G<C-o><C-o>
 
 vnoremap // y/<c-r>"<cr>
 
-nnoremap <leader>im  :call AddVerilogComment()<CR>
-function! AddVerilogComment()
-    call append(line(".") + 1, '//---------------------------------------------------------------------------------------------' )
-endfunction
+nnoremap <leader>im  :call common_func#InsertDivider()<CR>
 
 au BufEnter,BufRead *.lib setlocal ft=
 
